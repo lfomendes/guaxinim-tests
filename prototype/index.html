@@ -1,0 +1,1369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coffee Nerds</title>
+<meta name="description" content="Clickable design prototype for Coffee Nerds, a personal coffee brewing journal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== Tokens (design-system/coffee-nerds/MASTER.md) ===== */
+:root {
+  --font-display: 'Calistoga', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --color-background: #FBF6EE;
+  --color-surface: #FFFDF9;
+  --color-muted: #F3EADC;
+  --color-foreground: #2B1A0E;
+  --color-muted-foreground: #6B5443;
+  --color-primary: #92400E;
+  --color-primary-hover: #7A350B;
+  --color-on-primary: #FFFFFF;
+  --color-primary-tint: #FBE9D2;
+  --color-secondary: #B45309;
+  --color-border: #E6D8C3;
+  --color-border-strong: #9A8268;
+  --color-success: #2F6B3A;
+  --color-warning: #8A5A00;
+  --color-destructive: #B42318;
+  --color-ring: #92400E;
+  --shadow-sm: 0 1px 2px rgb(43 26 14 / .06);
+  --shadow-md: 0 2px 4px rgb(43 26 14 / .06), 0 8px 16px rgb(43 26 14 / .06);
+  --shadow-lg: 0 12px 32px rgb(43 26 14 / .14);
+
+  --space-xs: 4px; --space-sm: 8px; --space-md: 16px; --space-lg: 24px;
+  --space-xl: 32px; --space-2xl: 48px; --space-3xl: 64px;
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-full: 999px;
+  --icon-sm: 16px; --icon-md: 20px; --icon-lg: 24px;
+  --dur-fast: 150ms; --dur-base: 220ms; --dur-exit: 150ms;
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --nav-h: 64px; --sidebar-w: 248px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-background: #17100B; --color-surface: #221812; --color-muted: #2E2219;
+    --color-foreground: #F6ECDF; --color-muted-foreground: #C4B09C;
+    --color-primary: #F0A961; --color-primary-hover: #F5BB7E; --color-on-primary: #2B1A0E;
+    --color-primary-tint: #3A2716; --color-secondary: #F5C27A;
+    --color-border: #3D2E22; --color-border-strong: #8C7259;
+    --color-success: #86C995; --color-warning: #E8B04B; --color-destructive: #F2958A; --color-ring: #F0A961;
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / .3); --shadow-md: 0 2px 6px rgb(0 0 0 / .35); --shadow-lg: 0 12px 32px rgb(0 0 0 / .5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --color-background: #17100B; --color-surface: #221812; --color-muted: #2E2219;
+  --color-foreground: #F6ECDF; --color-muted-foreground: #C4B09C;
+  --color-primary: #F0A961; --color-primary-hover: #F5BB7E; --color-on-primary: #2B1A0E;
+  --color-primary-tint: #3A2716; --color-secondary: #F5C27A;
+  --color-border: #3D2E22; --color-border-strong: #8C7259;
+  --color-success: #86C995; --color-warning: #E8B04B; --color-destructive: #F2958A; --color-ring: #F0A961;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / .3); --shadow-md: 0 2px 6px rgb(0 0 0 / .35); --shadow-lg: 0 12px 32px rgb(0 0 0 / .5);
+  color-scheme: dark;
+}
+
+/* ===== Base ===== */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; min-height: 100dvh;
+  background: var(--color-background); color: var(--color-foreground);
+  font: 400 1rem/1.55 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font: 400 clamp(1.75rem, 5vw, 2.5rem)/1.15 var(--font-display); }
+h2 { font: 400 1.5rem/1.2 var(--font-display); }
+h3 { font-size: 1.125rem; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--color-primary); text-underline-offset: 3px; }
+a, button, summary, label[for], .radio-card, select { cursor: pointer; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--color-ring); outline-offset: 2px; border-radius: 4px; }
+h1:focus, h2:focus { outline: none; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.display { font-family: var(--font-display); font-weight: 400; }
+.muted { color: var(--color-muted-foreground); }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.icon { width: var(--icon-md); height: var(--icon-md); flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon--sm { width: var(--icon-sm); height: var(--icon-sm); }
+.icon--lg { width: var(--icon-lg); height: var(--icon-lg); }
+.icon--filled { fill: currentColor; }
+.skip-link { position: absolute; left: 16px; top: -100px; z-index: 200; background: var(--color-primary); color: var(--color-on-primary); padding: 10px 16px; border-radius: var(--radius-sm); font-weight: 600; }
+.skip-link:focus { top: 12px; }
+
+/* ===== Layout ===== */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 8px 8px 16px; padding-top: max(8px, env(safe-area-inset-top));
+  background: color-mix(in srgb, var(--color-background) 90%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--color-foreground); font: 400 1.25rem/1 var(--font-display); min-height: 44px; }
+.brand-mark { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--color-primary); color: var(--color-on-primary); }
+main { padding: var(--space-lg) var(--space-md) calc(var(--nav-h) + var(--space-2xl) + env(safe-area-inset-bottom)); }
+.main-inner { max-width: 72rem; margin: 0 auto; }
+.main-inner.enter { animation: fade var(--dur-base) var(--ease-out); }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.bottomnav {
+  position: fixed; inset: auto 0 0 0; z-index: 20;
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  height: calc(var(--nav-h) + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
+  background: var(--color-surface); border-top: 1px solid var(--color-border); box-shadow: 0 -2px 12px rgb(43 26 14 / .05);
+}
+.bottomnav a {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  min-height: 48px; font-size: .75rem; font-weight: 500; color: var(--color-muted-foreground); text-decoration: none;
+  transition: color var(--dur-fast) ease;
+}
+.bottomnav a:hover { color: var(--color-foreground); }
+.bottomnav a[aria-current="page"] { color: var(--color-primary); font-weight: 600; }
+.bottomnav a[aria-current="page"]:not(.nav-primary)::before { content: ''; position: absolute; top: 0; left: 28%; right: 28%; height: 3px; border-radius: 0 0 3px 3px; background: var(--color-primary); }
+.bottomnav .fab { width: 48px; height: 48px; margin-top: -22px; border-radius: var(--radius-full); display: grid; place-items: center; background: var(--color-primary); color: var(--color-on-primary); box-shadow: var(--shadow-md); border: 3px solid var(--color-surface); transition: background-color var(--dur-fast) ease; }
+.bottomnav a.nav-primary:hover .fab { background: var(--color-primary-hover); }
+
+.sidebar { display: none; }
+@media (min-width: 1024px) {
+  .topbar, .bottomnav { display: none; }
+  .sidebar {
+    display: flex; flex-direction: column; gap: var(--space-lg);
+    position: fixed; inset: 0 auto 0 0; z-index: 20; width: var(--sidebar-w);
+    padding: var(--space-lg) var(--space-md); background: var(--color-surface); border-right: 1px solid var(--color-border);
+  }
+  .sidebar nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .sidebar nav a {
+    position: relative; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px;
+    border-radius: var(--radius-sm); color: var(--color-foreground); text-decoration: none; font-weight: 500;
+    transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+  .sidebar nav a:hover { background: var(--color-muted); }
+  .sidebar nav a[aria-current="page"] { background: var(--color-primary-tint); color: var(--color-primary); font-weight: 600; }
+  .sidebar nav a[aria-current="page"]::before { content: ''; position: absolute; left: -16px; top: 8px; bottom: 8px; width: 4px; border-radius: 0 4px 4px 0; background: var(--color-primary); }
+  .sidebar .btn-primary { width: 100%; justify-content: center; }
+  .sidebar .btn-primary[aria-current="page"] { box-shadow: 0 0 0 3px var(--color-primary-tint); }
+  .sidebar-foot { margin-top: auto; display: grid; gap: 4px; font-size: .875rem; }
+  .sidebar-foot a { color: var(--color-muted-foreground); min-height: 32px; display: flex; align-items: center; }
+  main { margin-left: var(--sidebar-w); padding: var(--space-2xl) var(--space-2xl) var(--space-3xl); }
+}
+body.focus-mode .topbar, body.focus-mode .bottomnav, body.focus-mode .sidebar { display: none; }
+body.focus-mode main { margin-left: 0; padding-bottom: var(--space-2xl); }
+
+/* ===== Page structure ===== */
+.page-head { display: grid; gap: var(--space-sm); margin-bottom: var(--space-xl); }
+.page-head .lead { font-size: 1.125rem; color: var(--color-muted-foreground); max-width: 40rem; }
+.page-head-row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-md); }
+.eyebrow { font: 500 .75rem/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--color-muted-foreground); }
+.back-link { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; font-weight: 500; text-decoration: none; margin-bottom: var(--space-sm); }
+.back-link:hover { text-decoration: underline; }
+.section { margin-top: var(--space-2xl); }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); margin-bottom: var(--space-md); }
+.section-head a { font-weight: 500; font-size: .9375rem; min-height: 44px; display: inline-flex; align-items: center; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-md); }
+.grid { display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+.split { display: grid; gap: var(--space-xl); }
+@media (min-width: 900px) { .split { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: start; } }
+.stack { display: grid; gap: var(--space-sm); }
+.readable { max-width: 40rem; }
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 20px; border-radius: var(--radius-md); border: 1.5px solid transparent;
+  font: 600 1rem/1 var(--font-body); text-decoration: none; white-space: nowrap;
+  transition: background-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+  touch-action: manipulation;
+}
+.btn-primary { background: var(--color-primary); color: var(--color-on-primary); }
+.btn-primary:hover { background: var(--color-primary-hover); box-shadow: var(--shadow-md); }
+.btn-secondary { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
+.btn-secondary:hover { background: var(--color-primary-tint); }
+.btn-ghost { background: transparent; color: var(--color-foreground); }
+.btn-ghost:hover { background: var(--color-muted); }
+.btn-danger { background: transparent; color: var(--color-destructive); border-color: currentColor; }
+.btn-danger:hover { background: color-mix(in srgb, var(--color-destructive) 10%, transparent); }
+.btn-lg { min-height: 56px; padding: 0 28px; font-size: 1.0625rem; }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .45; cursor: not-allowed; box-shadow: none; }
+.icon-btn { width: 44px; height: 44px; padding: 0; display: inline-grid; place-items: center; border-radius: var(--radius-full); border: 0; background: transparent; color: var(--color-foreground); transition: background-color var(--dur-fast) ease; }
+.icon-btn:hover { background: var(--color-muted); }
+
+/* ===== Cards ===== */
+.card {
+  display: block; background: var(--color-surface); color: inherit; text-decoration: none;
+  border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-lg); box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--dur-base) ease, border-color var(--dur-base) ease;
+}
+a.card:hover { box-shadow: var(--shadow-md); border-color: var(--color-border-strong); }
+.card-title { font: 400 1.25rem/1.2 var(--font-display); margin: var(--space-sm) 0 4px; overflow-wrap: anywhere; }
+.card-meta { color: var(--color-muted-foreground); font-size: .9375rem; }
+.card-foot { margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px dashed var(--color-border); display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: .875rem; color: var(--color-muted-foreground); }
+.card--feature { background: var(--color-primary-tint); border-color: transparent; }
+.card--tip { display: flex; gap: var(--space-md); align-items: flex-start; }
+.card--tip .tip-icon { width: 44px; height: 44px; flex: none; border-radius: var(--radius-md); display: grid; place-items: center; background: var(--color-primary-tint); color: var(--color-primary); }
+
+/* ===== Badges & chips ===== */
+.badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: var(--radius-full); font-size: .8125rem; font-weight: 500; background: var(--color-muted); color: var(--color-foreground); border: 1px solid transparent; }
+.badge .num { font-family: var(--font-mono); font-weight: 500; }
+.badge--peak { color: var(--color-success); background: color-mix(in srgb, var(--color-success) 12%, var(--color-surface)); }
+.badge--resting { color: var(--color-warning); background: color-mix(in srgb, var(--color-warning) 12%, var(--color-surface)); }
+.badge--past { color: var(--color-muted-foreground); background: var(--color-muted); }
+.badge--builtin { background: var(--color-primary-tint); color: var(--color-primary); }
+.badge--outline { background: transparent; border-color: var(--color-border-strong); color: var(--color-muted-foreground); }
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: var(--space-sm) 0 0; padding: 0; }
+.chip { padding: 2px 10px; border-radius: var(--radius-full); border: 1px solid var(--color-border); font-size: .8125rem; color: var(--color-muted-foreground); }
+.filter-bar { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: flex-end; margin-bottom: var(--space-lg); }
+.filter-chip {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-border-strong); background: var(--color-surface); font-weight: 500; font-size: .9375rem;
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+.filter-chip:hover { border-color: var(--color-primary); }
+.filter-chip[aria-pressed="true"] { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.filter-chip .count { font-family: var(--font-mono); font-size: .8125rem; opacity: .85; }
+
+/* ===== Stats ===== */
+.stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: var(--space-sm); margin: 0; }
+.stat { background: var(--color-muted); border-radius: var(--radius-sm); padding: 10px 12px; }
+.stat dt { font: 500 .6875rem/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--color-muted-foreground); }
+.stat dd { margin: 4px 0 0; font: 500 1.125rem/1.2 var(--font-mono); font-variant-numeric: tabular-nums; }
+.stat dd small { display: block; font: 400 .75rem/1.3 var(--font-body); color: var(--color-muted-foreground); margin-top: 2px; }
+.stat-line { font-family: var(--font-mono); font-size: .875rem; color: var(--color-muted-foreground); font-variant-numeric: tabular-nums; display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: var(--space-sm); }
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: 8px 20px; margin: 0; }
+.facts dt { color: var(--color-muted-foreground); font-size: .9375rem; }
+.facts dd { margin: 0; font-weight: 500; overflow-wrap: anywhere; }
+
+/* ===== Stars ===== */
+.stars { display: inline-flex; gap: 1px; color: var(--color-secondary); vertical-align: middle; }
+.stars .icon:not(.icon--filled) { color: var(--color-border-strong); }
+
+/* ===== Brew rows ===== */
+.brew-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-sm); }
+.brew { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+.brew > summary, .brew > .brew-sum { list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 14px 16px; border-radius: var(--radius-md); }
+.brew > summary::-webkit-details-marker { display: none; }
+.brew > summary:hover { background: color-mix(in srgb, var(--color-muted) 55%, transparent); }
+.brew-title { font-weight: 600; overflow-wrap: anywhere; }
+.brew-sub { color: var(--color-muted-foreground); font-size: .875rem; grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.brew-note { grid-column: 1 / -1; font-size: .9375rem; color: var(--color-foreground); font-style: italic; }
+.brew-body { padding: 0 16px 16px; display: grid; gap: var(--space-md); border-top: 1px dashed var(--color-border); padding-top: var(--space-md); }
+.brew[open] > summary .chev { transform: rotate(90deg); }
+.chev { transition: transform var(--dur-fast) ease; color: var(--color-muted-foreground); }
+.brew.is-new { border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-tint); }
+.sensory { display: grid; gap: 6px; }
+.sensory-row { display: grid; grid-template-columns: 6.5rem 1fr 2rem; align-items: center; gap: 10px; font-size: .875rem; }
+.meter { height: 8px; border-radius: 99px; background: var(--color-muted); overflow: hidden; }
+.meter > span { display: block; height: 100%; background: var(--color-primary); border-radius: 99px; }
+
+/* ===== Forms ===== */
+.form { display: grid; gap: var(--space-lg); max-width: 40rem; }
+fieldset { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg) var(--space-lg); margin: 0; background: var(--color-surface); min-width: 0; }
+legend { font: 400 1.25rem/1.2 var(--font-display); padding: 0 6px; margin-left: -6px; }
+.field { display: grid; gap: 6px; }
+.field + .field, .field-row + .field, .field + .field-row, .field-row + .field-row { margin-top: var(--space-md); }
+.field-row { display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); }
+.field label, .label { font-weight: 600; font-size: .9375rem; }
+.req { font-weight: 400; color: var(--color-muted-foreground); }
+.hint { font-size: .875rem; color: var(--color-muted-foreground); }
+.hint.changed { color: var(--color-warning); font-weight: 500; }
+.input, select.input, textarea.input {
+  width: 100%; min-height: 44px; padding: 10px 14px; font-size: 1rem;
+  background: var(--color-surface); color: var(--color-foreground);
+  border: 1.5px solid var(--color-border-strong); border-radius: var(--radius-sm);
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+textarea.input { min-height: 96px; resize: vertical; line-height: 1.5; }
+.input:hover { border-color: var(--color-foreground); }
+.input:focus-visible { border-color: var(--color-primary); outline: 3px solid var(--color-ring); outline-offset: 1px; border-radius: var(--radius-sm); }
+.input[aria-invalid="true"] { border-color: var(--color-destructive); }
+.input-unit { position: relative; }
+.input-unit .input { padding-right: 3rem; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.input-unit .unit { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--color-muted-foreground); font-family: var(--font-mono); pointer-events: none; }
+.field-error { color: var(--color-destructive); font-size: .875rem; font-weight: 500; display: flex; gap: 6px; align-items: center; }
+.field-error:empty { display: none; }
+.error-summary { border: 2px solid var(--color-destructive); border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); background: color-mix(in srgb, var(--color-destructive) 8%, var(--color-surface)); }
+.error-summary h2 { font: 600 1.0625rem/1.3 var(--font-body); color: var(--color-destructive); display: flex; gap: 8px; align-items: center; }
+.error-summary ul { margin: 8px 0 0; padding-left: 1.25rem; }
+.error-summary a { color: var(--color-destructive); font-weight: 500; }
+details.more { border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+details.more > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 52px; padding: 0 var(--space-lg); font-weight: 600; list-style: none; border-radius: var(--radius-md); }
+details.more > summary::-webkit-details-marker { display: none; }
+details.more > summary:hover { background: var(--color-muted); }
+details.more[open] > summary .chev { transform: rotate(90deg); }
+details.more > .more-body { padding: 0 var(--space-lg) var(--space-lg); display: grid; gap: var(--space-md); }
+.segmented { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+.segmented label { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1.5px solid var(--color-border-strong); border-radius: var(--radius-sm); font-weight: 500; }
+.segmented label:has(input:checked) { border-color: var(--color-primary); background: var(--color-primary-tint); color: var(--color-primary); }
+.segmented input { accent-color: var(--color-primary); width: 18px; height: 18px; margin: 0; }
+
+/* Radio cards (Log brew steps 1–2) */
+.radio-grid { display: grid; gap: var(--space-sm); grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); margin-top: var(--space-sm); }
+.radio-card { position: relative; display: grid; gap: 4px; padding: 14px 16px 14px 48px; border: 1.5px solid var(--color-border-strong); border-radius: var(--radius-md); background: var(--color-surface); transition: border-color var(--dur-fast) ease, background-color var(--dur-fast) ease; }
+.radio-card:hover { border-color: var(--color-primary); }
+.radio-card input { position: absolute; left: 16px; top: 17px; width: 20px; height: 20px; margin: 0; accent-color: var(--color-primary); }
+.radio-card:has(input:checked) { border-color: var(--color-primary); background: var(--color-primary-tint); box-shadow: 0 0 0 1px var(--color-primary); }
+.radio-card:has(input:focus-visible) { outline: 3px solid var(--color-ring); outline-offset: 2px; }
+.radio-card .rc-title { font-weight: 600; overflow-wrap: anywhere; }
+.radio-card .rc-sub { font-size: .875rem; color: var(--color-muted-foreground); }
+
+/* Star rating input */
+.rating-input { display: flex; gap: 4px; flex-wrap: wrap; }
+.rating-input input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.rating-input label { width: 48px; height: 48px; display: grid; place-items: center; border-radius: var(--radius-sm); color: var(--color-border-strong); transition: color var(--dur-fast) ease, background-color var(--dur-fast) ease; }
+.rating-input label:hover { background: var(--color-muted); }
+.rating-input label .icon { width: 30px; height: 30px; }
+.rating-input label.on { color: var(--color-secondary); }
+.rating-input label.on .icon { fill: currentColor; }
+.rating-input input:focus-visible + label { outline: 3px solid var(--color-ring); outline-offset: 1px; }
+.rating-value { font-family: var(--font-mono); color: var(--color-muted-foreground); margin-left: 8px; align-self: center; }
+
+/* Range sliders */
+.slider { display: grid; gap: 4px; }
+.slider-head { display: flex; justify-content: space-between; align-items: baseline; }
+.slider-head output { font-family: var(--font-mono); font-weight: 500; }
+.slider input[type="range"] { width: 100%; height: 44px; accent-color: var(--color-primary); margin: 0; }
+.slider-ends { display: flex; justify-content: space-between; font-size: .75rem; color: var(--color-muted-foreground); margin-top: -6px; }
+
+/* Step indicator */
+.steps { list-style: none; display: flex; gap: var(--space-sm); padding: 0; margin: 0 0 var(--space-lg); counter-reset: step; }
+.steps li { flex: 1; display: grid; gap: 6px; font-size: .8125rem; font-weight: 500; color: var(--color-muted-foreground); }
+.steps li::before { content: ''; height: 4px; border-radius: 4px; background: var(--color-border); }
+.steps li.done::before, .steps li[aria-current="step"]::before { background: var(--color-primary); }
+.steps li[aria-current="step"] { color: var(--color-foreground); font-weight: 600; }
+.steps .n { font-family: var(--font-mono); }
+.ratio-out { display: inline-flex; align-items: baseline; gap: 8px; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--color-primary-tint); color: var(--color-primary); margin-top: var(--space-md); }
+.ratio-out strong { font: 500 1.25rem/1 var(--font-mono); }
+.action-bar {
+  position: sticky; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom)); z-index: 10;
+  display: flex; justify-content: space-between; gap: var(--space-sm); padding: 12px var(--space-md);
+  margin: var(--space-lg) calc(-1 * var(--space-md)) 0; background: var(--color-surface);
+  border-top: 1px solid var(--color-border); box-shadow: 0 -4px 12px rgb(43 26 14 / .06);
+}
+@media (min-width: 1024px) { .action-bar { bottom: 0; margin: var(--space-lg) 0 0; border: 1px solid var(--color-border); border-radius: var(--radius-md); } }
+
+/* ===== Empty state ===== */
+.empty { text-align: center; padding: var(--space-2xl) var(--space-lg); border: 1.5px dashed var(--color-border-strong); border-radius: var(--radius-md); display: grid; justify-items: center; gap: var(--space-sm); }
+.empty .empty-icon { width: 56px; height: 56px; border-radius: var(--radius-full); display: grid; place-items: center; background: var(--color-primary-tint); color: var(--color-primary); }
+
+/* ===== Brew guide (pages/brew-guide.md) ===== */
+.guide-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); margin-bottom: var(--space-lg); }
+.guide-bar .title { font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+.guide { display: grid; gap: var(--space-xl); max-width: 64rem; margin: 0 auto; }
+@media (min-width: 900px) { .guide { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+.guide-panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-lg); display: grid; gap: var(--space-lg); justify-items: center; box-shadow: var(--shadow-sm); }
+.timer { position: relative; width: min(78vw, 300px); aspect-ratio: 1; display: grid; place-items: center; }
+.timer svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.timer .track { stroke: var(--color-muted); }
+.timer .prog { stroke: var(--color-primary); transition: stroke-dashoffset 1s linear; }
+.timer-read { text-align: center; }
+.timer-time { font: 500 clamp(3rem, 14vw, 4.5rem)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.timer-total { font-family: var(--font-mono); color: var(--color-muted-foreground); margin-top: 6px; }
+.now-card { width: 100%; padding: var(--space-md) var(--space-lg); border-radius: var(--radius-md); background: var(--color-primary-tint); }
+.now-card .label { font: 500 .75rem/1 var(--font-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--color-primary); }
+.now-card .text { font-size: 1.25rem; font-weight: 500; margin-top: 8px; line-height: 1.4; }
+.next-text { width: 100%; font-size: .9375rem; color: var(--color-muted-foreground); }
+.guide-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-sm); width: 100%; }
+.guide-controls .btn-lg { min-width: 160px; }
+.step-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.step-list li { display: grid; grid-template-columns: 4.5rem 1fr; gap: 12px; padding: 12px 14px; border-radius: var(--radius-sm); border: 1px solid transparent; }
+.step-list li .at { font-family: var(--font-mono); color: var(--color-muted-foreground); font-variant-numeric: tabular-nums; }
+.step-list li.past { color: var(--color-muted-foreground); }
+.step-list li.current { background: var(--color-primary-tint); border-color: var(--color-primary); }
+.step-list li.current .at { color: var(--color-primary); font-weight: 500; }
+.now-tag { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 99px; background: var(--color-primary); color: var(--color-on-primary); font: 600 .6875rem/1.6 var(--font-body); text-transform: uppercase; letter-spacing: .06em; vertical-align: 2px; }
+.target { font-family: var(--font-mono); font-weight: 500; white-space: nowrap; }
+.kbd-hint { font-size: .8125rem; color: var(--color-muted-foreground); text-align: center; }
+kbd { font-family: var(--font-mono); font-size: .75rem; padding: 1px 6px; border: 1px solid var(--color-border-strong); border-bottom-width: 2px; border-radius: 4px; }
+
+/* ===== Recipe steps table ===== */
+.steps-table { width: 100%; border-collapse: collapse; }
+.steps-table th, .steps-table td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+.steps-table th { font: 500 .75rem/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--color-muted-foreground); }
+.steps-table td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(--color-muted-foreground); width: 6rem; }
+
+/* ===== Toast ===== */
+.toast-region { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--nav-h) + 16px + env(safe-area-inset-bottom)); z-index: 40; width: min(calc(100% - 32px), 28rem); display: grid; gap: 8px; pointer-events: none; }
+@media (min-width: 1024px) { .toast-region { bottom: 24px; left: calc(50% + var(--sidebar-w) / 2); } }
+.toast { pointer-events: auto; display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 16px; border-radius: var(--radius-md); background: var(--color-foreground); color: var(--color-background); box-shadow: var(--shadow-lg); animation: toast-in var(--dur-base) var(--ease-out); }
+.toast.out { animation: toast-out var(--dur-exit) ease-in forwards; }
+.toast p { flex: 1; font-weight: 500; }
+.toast button { background: transparent; border: 0; color: var(--color-primary-tint); font-weight: 700; min-height: 40px; padding: 0 10px; border-radius: var(--radius-sm); text-decoration: underline; text-underline-offset: 3px; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes toast-out { to { opacity: 0; transform: translateY(8px); } }
+
+/* ===== Sign in ===== */
+.auth { min-height: calc(100dvh - 96px); display: grid; place-items: center; }
+.auth .card { width: min(100%, 26rem); padding: var(--space-xl); }
+.divider { display: flex; align-items: center; gap: 12px; color: var(--color-muted-foreground); font-size: .875rem; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--color-border); }
+
+/* ===== Style guide ===== */
+.swatches { display: grid; gap: var(--space-sm); grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.swatch { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface); }
+.swatch-color { height: 64px; border-bottom: 1px solid var(--color-border); }
+.swatch-body { padding: 8px 10px; font-size: .8125rem; }
+.swatch-body code { font-family: var(--font-mono); color: var(--color-muted-foreground); font-size: .75rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
+  .timer .prog { transition: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- Lucide icons (ISC license), 24×24, 2px stroke -->
+  <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-package" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></symbol>
+  <symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></symbol>
+  <symbol id="i-trend-down" viewBox="0 0 24 24"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol>
+  <symbol id="i-lightbulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+</svg>
+
+<aside class="sidebar" aria-label="Main">
+  <a class="brand" href="#/"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-coffee"/></svg></span>Coffee Nerds</a>
+  <a class="btn btn-primary" href="#/log" data-nav="log"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Log a brew</a>
+  <nav aria-label="Primary">
+    <ul>
+      <li><a href="#/" data-nav="home"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Home</a></li>
+      <li><a href="#/coffees" data-nav="coffees"><svg class="icon" aria-hidden="true"><use href="#i-package"/></svg>Coffees</a></li>
+      <li><a href="#/recipes" data-nav="recipes"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Recipes</a></li>
+      <li><a href="#/history" data-nav="history"><svg class="icon" aria-hidden="true"><use href="#i-history"/></svg>History</a></li>
+    </ul>
+  </nav>
+  <div class="sidebar-foot">
+    <button class="btn btn-ghost theme-toggle" type="button" style="justify-content:flex-start;padding:0 12px"></button>
+    <a href="#/styleguide">Style guide</a>
+    <a href="#/signin">Sign-in screen</a>
+  </div>
+</aside>
+
+<header class="topbar">
+  <a class="brand" href="#/"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-coffee"/></svg></span>Coffee Nerds</a>
+  <div style="display:flex;gap:4px">
+    <a class="icon-btn" href="#/signin" aria-label="Account"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></a>
+    <button class="icon-btn theme-toggle" type="button"></button>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <div class="main-inner" id="view"></div>
+</main>
+
+<nav class="bottomnav" aria-label="Primary">
+  <a href="#/" data-nav="home"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Home</a>
+  <a href="#/coffees" data-nav="coffees"><svg class="icon" aria-hidden="true"><use href="#i-package"/></svg>Coffees</a>
+  <a href="#/log" data-nav="log" class="nav-primary"><span class="fab"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>Log brew</a>
+  <a href="#/recipes" data-nav="recipes"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Recipes</a>
+  <a href="#/history" data-nav="history"><svg class="icon" aria-hidden="true"><use href="#i-history"/></svg>History</a>
+</nav>
+
+<div class="toast-region" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+'use strict';
+/* =====================================================================
+   Coffee Nerds — design prototype. In-memory data only; nothing is saved.
+   Seed recipes come from PROJECT.md §8.
+   ===================================================================== */
+const TODAY = new Date('2026-10-27T09:00:00');
+
+const METHODS = [
+  { id: 'v60', name: 'V60', type: 'Pour-over', filter: 'Paper', desc: 'Conical dripper with spiral ribs and a paper filter. Clean, bright, transparent cups.' },
+  { id: 'fp', name: 'French Press', type: 'Immersion', filter: 'Metal', desc: 'Full immersion with a metal mesh filter. Heavy body and a forgiving technique.' },
+  { id: 'ap', name: 'AeroPress', type: 'Hybrid (immersion + pressure)', filter: 'Paper', desc: 'Immersion plus gentle pressure. Fast, versatile and travel-friendly.' },
+];
+
+const recipes = [
+  { id: 'hoffmann-v60', name: 'The Ultimate V60 Technique', method: 'v60', author: 'James Hoffmann', builtIn: true,
+    dose: 30, water: 500, temp: 100, tempNote: 'just off the boil', grind: 'Medium-fine', time: 210,
+    steps: [
+      { t: null, at: 'Prep', text: 'Rinse the paper filter with hot water and discard it. Add the coffee, level the bed and make a small well in the middle.' },
+      { t: 0, at: '0:00', text: 'Bloom: pour 2× the dose and swirl so all the grounds get wet.', target: 60 },
+      { t: 45, at: '0:45', text: 'Pour in circles.', target: 300 },
+      { t: 75, at: '1:15', text: 'Pour more gently.', target: 500 },
+      { t: 105, at: '1:45', text: 'Stir once gently with a spoon, then give a gentle swirl to flatten the bed.' },
+      { t: 210, at: '3:30', text: 'Drawdown finishes. Serve.' },
+    ] },
+  { id: 'kasuya-46', name: '4:6 Method', method: 'v60', author: 'Tetsu Kasuya · 2016 World Brewers Cup', builtIn: true,
+    dose: 20, water: 300, temp: 93, grind: 'Medium-coarse', time: 210,
+    idea: 'The water is split into 40% (first two pours, which set sweetness vs. acidity) and 60% (last pours, which set strength). A smaller first pour gives a sweeter cup; a larger one, a brighter cup.',
+    steps: [
+      { t: 0, at: '0:00', text: 'First pour.', target: 60 },
+      { t: 40, at: '0:40', text: 'Second pour — the 40% phase ends.', target: 120 },
+      { t: 80, at: '1:20', text: 'Third pour.', target: 180 },
+      { t: 120, at: '2:00', text: 'Fourth pour.', target: 240 },
+      { t: 150, at: '2:30', text: 'Final pour.', target: 300 },
+      { t: 210, at: '3:30', text: 'Remove the dripper.' },
+    ] },
+  { id: 'hoffmann-fp', name: 'The Ultimate French Press Technique', method: 'fp', author: 'James Hoffmann', builtIn: true,
+    dose: 30, water: 500, temp: 100, tempNote: 'just off the boil', grind: 'Medium', time: 540,
+    steps: [
+      { t: 0, at: '0:00', text: 'Add the coffee and pour all the water. Don’t stir.', target: 500 },
+      { t: 240, at: '4:00', text: 'Break the crust and stir gently. Skim off the foam and floating grounds.' },
+      { t: 250, at: '4:10', text: 'Wait 5–8 more minutes so the fines sink to the bottom.' },
+      { t: 540, at: '9:00', text: 'Lid on, lower the plunger only to the surface — don’t press. Pour slowly.' },
+    ] },
+  { id: 'stumptown-fp', name: 'French Press', method: 'fp', author: 'Stumptown Coffee Roasters', builtIn: true,
+    dose: 56, water: 850, temp: 96, grind: 'Coarse (breadcrumbs)', time: 240,
+    steps: [
+      { t: null, at: 'Prep', text: 'Preheat the French press with hot water, then empty it.' },
+      { t: 0, at: '0:00', text: 'Pour water, making sure all the grounds are wet.', target: 450 },
+      { t: 60, at: '1:00', text: 'Stir the grounds into the water, top up and put the lid on.', target: 850 },
+      { t: 240, at: '4:00', text: 'Press all the way down and serve right away — pour it all out.' },
+    ] },
+  { id: 'hoffmann-ap', name: 'The Ultimate AeroPress Technique', method: 'ap', author: 'James Hoffmann', builtIn: true,
+    dose: 11, water: 200, temp: 100, tempNote: 'just off the boil', grind: 'Fine side of medium', time: 180,
+    steps: [
+      { t: null, at: 'Prep', text: 'AeroPress in the normal position on a mug, paper filter in the cap (no rinse needed).' },
+      { t: 0, at: '0:00', text: 'Add the coffee and pour quickly so all grounds get wet. Insert the plunger ~1 cm to stop the drip.', target: 200 },
+      { t: 120, at: '2:00', text: 'Holding brewer and plunger, swirl gently.' },
+      { t: 150, at: '2:30', text: 'Press gently for about 30 seconds, all the way down.' },
+    ] },
+  { id: 'wac-2019', name: '2019 World AeroPress Champion', method: 'ap', author: 'Wendelien van Bunnik', builtIn: true,
+    dose: 30, water: 220, temp: 92, grind: 'Coarse', time: 90, ratioNote: '1:3.3 while brewing',
+    steps: [
+      { t: null, at: 'Prep', text: 'AeroPress inverted. Add 30 g of coffee. Rinse the paper filter.' },
+      { t: 0, at: '0:00', text: 'Pour water at 92 °C, then stir hard about 20 times.', target: 100 },
+      { t: 20, at: '0:20', text: 'Screw on the cap with the rinsed filter and push out the extra air.' },
+      { t: 40, at: '0:40', text: 'Flip onto the server and press.' },
+      { t: 70, at: 'After', text: 'Add bypass water at 92 °C. Pour between two cups to cool, serve at ~60 °C.', target: 220 },
+    ] },
+];
+
+const coffees = [
+  { id: 'santa-ines', name: 'Fazenda Santa Inês — Yellow Bourbon', roaster: 'Coffee Lab', country: 'Brazil', region: 'Sul de Minas', farm: 'Fazenda Santa Inês',
+    variety: 'Yellow Bourbon', process: 'Natural', altitude: 1150, roastLevel: 'Medium-light', roastDate: '2026-10-10',
+    notes: ['Chocolate', 'Caramel', 'Yellow fruits'], sca: 86, form: 'Whole bean', weight: 250, price: 'R$ 65.00', purchased: '2026-10-15', status: 'active',
+    personal: 'Great as a daily V60. Loves a slightly finer grind.' },
+  { id: 'guji-hambela', name: 'Guji Hambela', roaster: 'Torra Clara', country: 'Ethiopia', region: 'Guji', farm: 'Hambela washing station',
+    variety: 'Heirloom', process: 'Washed', altitude: 2100, roastLevel: 'Light', roastDate: '2026-10-22',
+    notes: ['Jasmine', 'Bergamot', 'Peach'], sca: 88, form: 'Whole bean', weight: 250, price: 'R$ 89.00', purchased: '2026-10-24', status: 'active' },
+  { id: 'huila-pink', name: 'Huila Pink Bourbon', roaster: 'Grão Norte', country: 'Colombia', region: 'Huila', farm: 'Finca El Mirador',
+    variety: 'Pink Bourbon', process: 'Anaerobic', altitude: 1750, roastLevel: 'Light', roastDate: '2026-09-12',
+    notes: ['Red berries', 'Panela', 'Red wine'], sca: 87, form: 'Whole bean', weight: 200, price: 'R$ 98.00', purchased: '2026-09-20', status: 'active' },
+  { id: 'cerrado-catuai', name: 'Cerrado Mineiro Catuaí', roaster: 'Coffee Lab', country: 'Brazil', region: 'Cerrado Mineiro',
+    variety: 'Yellow Catuaí', process: 'Honey', roastLevel: 'Medium', roastDate: '2026-08-20',
+    notes: ['Nutty', 'Milk chocolate'], sca: 84, form: 'Pre-ground', weight: 250, price: 'R$ 52.00', purchased: '2026-08-25', status: 'finished' },
+];
+
+const brews = [
+  { id: 'b6', date: '2026-10-27T08:15', coffee: 'santa-ines', recipe: 'hoffmann-v60', dose: 30, water: 500, temp: 100, grinder: 'Comandante — 24 clicks', time: 225, rating: 5,
+    sensory: { acidity: 3, sweetness: 5, body: 4, bitterness: 1 }, notes: 'Sweet and chocolatey, clean finish.', next: 'Keep it exactly like this.' },
+  { id: 'b5', date: '2026-10-26T08:10', coffee: 'santa-ines', recipe: 'kasuya-46', dose: 20, water: 300, temp: 93, grinder: 'Comandante — 28 clicks', time: 215, rating: 4,
+    sensory: { acidity: 4, sweetness: 4, body: 2, bitterness: 1 }, notes: 'Bright, a bit thin.', next: 'Try a larger first pour for more body.' },
+  { id: 'b4', date: '2026-10-25T09:30', coffee: 'guji-hambela', recipe: 'hoffmann-ap', dose: 11, water: 200, temp: 100, grinder: 'Comandante — 16 clicks', time: 185, rating: 3,
+    sensory: { acidity: 5, sweetness: 2, body: 2, bitterness: 1 }, notes: 'Sour at the end — still resting?', next: 'Grind 2 clicks finer, wait a few more days off roast.' },
+  { id: 'b3', date: '2026-10-24T07:50', coffee: 'santa-ines', recipe: 'hoffmann-fp', dose: 30, water: 500, temp: 100, grinder: 'Comandante — 30 clicks', time: 560, rating: 4,
+    sensory: { acidity: 2, sweetness: 4, body: 5, bitterness: 2 }, notes: 'Heavy and round, like a dessert.', next: '' },
+  { id: 'b2', date: '2026-10-22T08:05', coffee: 'huila-pink', recipe: 'hoffmann-v60', dose: 30, water: 500, temp: 100, grinder: 'Comandante — 22 clicks', time: 240, rating: 2,
+    sensory: { acidity: 2, sweetness: 2, body: 3, bitterness: 3 }, notes: 'Flat. The fruit is fading.', next: 'Try the AeroPress champion recipe to push sweetness.' },
+  { id: 'b1', date: '2026-10-20T10:20', coffee: 'huila-pink', recipe: 'wac-2019', dose: 30, water: 220, temp: 92, grinder: 'Comandante — 30 clicks', time: 95, rating: 4,
+    sensory: { acidity: 3, sweetness: 4, body: 4, bitterness: 1 }, notes: 'Syrupy, berries come back.', next: '' },
+];
+
+/* ===== Helpers ===== */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+const byId = (list, id) => list.find(x => x.id === id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ic = (name, cls = '') => `<svg class="icon ${cls}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+const parseMmss = v => { const m = /^(\d{1,2}):([0-5]\d)$/.exec(String(v).trim()); return m ? (+m[1]) * 60 + (+m[2]) : null; };
+const ratio = (dose, water) => { if (!dose || !water) return '—'; const r = water / dose; return `1:${Number.isInteger(r) ? r : r.toFixed(1)}`; };
+const fmtDate = (iso, opts = { day: 'numeric', month: 'short' }) => new Date(iso.length === 10 ? iso + 'T12:00' : iso).toLocaleDateString('en-US', opts);
+const fmtTime = iso => new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+const daysOff = c => c.roastDate ? Math.floor((TODAY - new Date(c.roastDate + 'T00:00')) / 86400000) : null;
+const methodOf = r => byId(METHODS, r.method);
+const brewsFor = (key, id) => brews.filter(b => b[key] === id);
+const bestBrew = coffeeId => brewsFor('coffee', coffeeId).sort((a, b) => b.rating - a.rating || b.date.localeCompare(a.date))[0];
+const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+
+function stars(n) {
+  let s = '';
+  for (let i = 1; i <= 5; i++) s += ic('star', `icon--sm ${i <= n ? 'icon--filled' : ''}`);
+  return `<span class="stars" role="img" aria-label="${n} of 5 stars">${s}</span>`;
+}
+function freshBadge(c) {
+  if (c.status === 'finished') return `<span class="badge badge--outline">${ic('archive', 'icon--sm')}Finished</span>`;
+  const d = daysOff(c);
+  if (d === null) return '';
+  const [cls, icon, label] = d < 7 ? ['resting', 'hourglass', 'Resting'] : d <= 30 ? ['peak', 'flame', 'Peak'] : ['past', 'trend-down', 'Past peak'];
+  return `<span class="badge badge--${cls}">${ic(icon, 'icon--sm')}<span><span class="num">${d}</span> ${d === 1 ? 'day' : 'days'} off roast · ${label}</span></span>`;
+}
+function tempLabel(r) { return `${r.temp} °C`; }
+function statLine(r) {
+  return `<p class="stat-line"><span>${r.dose} g</span><span>${r.water} g</span><span>${ratio(r.dose, r.water)}</span><span>${tempLabel(r)}</span><span>${mmss(r.time)}</span></p>`;
+}
+
+/* ===== Cards ===== */
+function coffeeCard(c) {
+  const n = brewsFor('coffee', c.id).length, best = bestBrew(c.id);
+  return `<a class="card" href="#/coffees/${c.id}">
+    <div class="badges">${freshBadge(c)}</div>
+    <h3 class="card-title">${esc(c.name)}</h3>
+    <p class="card-meta">${esc([c.roaster, c.country, c.process].filter(Boolean).join(' · '))}</p>
+    ${c.notes?.length ? `<ul class="chips" aria-label="Roaster's tasting notes">${c.notes.map(t => `<li class="chip">${esc(t)}</li>`).join('')}</ul>` : ''}
+    <div class="card-foot"><span>${plural(n, 'brew')}</span>${best ? `<span style="display:inline-flex;gap:6px;align-items:center">Best ${stars(best.rating)}</span>` : '<span>Not brewed yet</span>'}</div>
+  </a>`;
+}
+function recipeCard(r) {
+  return `<a class="card" href="#/recipes/${r.id}">
+    <div class="badges"><span class="badge badge--outline">${esc(methodOf(r).name)}</span>${r.builtIn ? '<span class="badge badge--builtin">Built-in</span>' : '<span class="badge">Mine</span>'}</div>
+    <h3 class="card-title">${esc(r.name)}</h3>
+    <p class="card-meta">${esc(r.author || 'My recipe')}</p>
+    ${statLine(r)}
+  </a>`;
+}
+function brewItem(b, { open = false, isNew = false } = {}) {
+  const c = byId(coffees, b.coffee), r = byId(recipes, b.recipe);
+  const sens = Object.entries(b.sensory || {});
+  return `<li><details class="brew${isNew ? ' is-new' : ''}" ${open ? 'open' : ''} id="brew-${b.id}">
+    <summary>
+      <span class="brew-title">${esc(c.name)}</span>
+      <span style="display:flex;align-items:center;gap:8px">${stars(b.rating)}${ic('right', 'icon--sm chev')}</span>
+      <span class="brew-sub"><span>${fmtDate(b.date, { weekday: 'short', day: 'numeric', month: 'short' })}, ${fmtTime(b.date)}</span><span>·</span><span>${esc(methodOf(r).name)} — ${esc(r.name)}</span></span>
+      ${b.notes ? `<span class="brew-note">“${esc(b.notes)}”</span>` : ''}
+    </summary>
+    <div class="brew-body">
+      <dl class="stats">
+        <div class="stat"><dt>Dose</dt><dd>${b.dose} g</dd></div>
+        <div class="stat"><dt>Water</dt><dd>${b.water} g</dd></div>
+        <div class="stat"><dt>Ratio</dt><dd>${ratio(b.dose, b.water)}</dd></div>
+        <div class="stat"><dt>Temp</dt><dd>${b.temp} °C</dd></div>
+        <div class="stat"><dt>Time</dt><dd>${b.time ? mmss(b.time) : '—'}</dd></div>
+      </dl>
+      ${b.grinder ? `<p><span class="muted">Grind:</span> ${esc(b.grinder)}</p>` : ''}
+      ${sens.length ? `<div class="sensory" aria-label="Sensory scores">${sens.map(([k, v]) => `<div class="sensory-row"><span style="text-transform:capitalize">${k}</span><span class="meter" aria-hidden="true"><span style="width:${v * 20}%"></span></span><span class="mono">${v}/5</span></div>`).join('')}</div>` : ''}
+      ${b.next ? `<p><strong>Next time:</strong> ${esc(b.next)}</p>` : ''}
+      <div class="actions" style="margin-top:0"><a class="btn btn-secondary" href="#/log?coffee=${c.id}&recipe=${r.id}">${ic('reset')}Brew this again</a></div>
+    </div>
+  </details></li>`;
+}
+function emptyState(icon, title, text, action) {
+  return `<div class="empty"><span class="empty-icon">${ic(icon, 'icon--lg')}</span><h3>${title}</h3><p class="muted readable">${text}</p>${action || ''}</div>`;
+}
+
+/* ===== Toast ===== */
+function toast(msg, action) {
+  const region = $('#toasts');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `<p>${esc(msg)}</p>${action ? `<button type="button">${esc(action.label)}</button>` : ''}`;
+  const close = () => { el.classList.add('out'); setTimeout(() => el.remove(), 160); };
+  if (action) $('button', el).addEventListener('click', () => { action.fn(); close(); });
+  region.appendChild(el);
+  setTimeout(close, action ? 8000 : 4000);
+}
+
+/* ===================================================================
+   Views. Each returns { title, nav, html, mount?(root) => cleanup? }
+   =================================================================== */
+function Home() {
+  const active = coffees.filter(c => c.status === 'active');
+  const recent = [...brews].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
+  const bests = active.map(c => ({ c, b: bestBrew(c.id) })).filter(x => x.b);
+  return { title: 'Home', nav: 'home', html: `
+    <header class="page-head">
+      <p class="eyebrow">${fmtDate(TODAY.toISOString(), { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+      <h1 tabindex="-1">Good morning. What are we brewing?</h1>
+      <p class="lead">You have ${plural(active.length, 'open bag')} and ${plural(brews.length, 'logged cup')}. Pick up where you left off.</p>
+      <div class="actions"><a class="btn btn-primary btn-lg" href="#/log">${ic('plus')}Log a brew</a><a class="btn btn-secondary btn-lg" href="#/recipes">${ic('book')}Browse recipes</a></div>
+    </header>
+
+    <section class="section" aria-labelledby="h-bags">
+      <div class="section-head"><h2 id="h-bags">Open bags</h2><a href="#/coffees">All coffees</a></div>
+      <div class="grid">${active.map(coffeeCard).join('')}</div>
+    </section>
+
+    <section class="section" aria-labelledby="h-best">
+      <div class="section-head"><h2 id="h-best">Best way to brew…</h2><a href="#/history">Full history</a></div>
+      <div class="grid">${bests.map(({ c, b }) => { const r = byId(recipes, b.recipe); return `
+        <a class="card card--feature" href="#/history?coffee=${c.id}">
+          <p class="eyebrow">${ic('trophy', 'icon--sm')} ${esc(c.name)}</p>
+          <h3 class="card-title">${esc(methodOf(r).name)} · ${esc(r.name)}</h3>
+          <p class="card-meta" style="display:flex;gap:8px;align-items:center">${stars(b.rating)} <span>${fmtDate(b.date)}</span></p>
+          <p class="stat-line"><span>${b.dose} g</span><span>${b.water} g</span><span>${ratio(b.dose, b.water)}</span><span>${esc(b.grinder || '')}</span></p>
+        </a>`; }).join('')}</div>
+    </section>
+
+    <section class="section" aria-labelledby="h-recent">
+      <div class="section-head"><h2 id="h-recent">Recent cups</h2><a href="#/history">See all</a></div>
+      <ul class="brew-list">${recent.map(b => brewItem(b)).join('')}</ul>
+    </section>
+
+    <section class="section">
+      <div class="card card--tip">
+        <span class="tip-icon">${ic('lightbulb')}</span>
+        <div class="stack">
+          <h3>New to brewing? Start from a classic.</h3>
+          <p class="muted">Six built-in recipes from champions and roasters — follow one step by step with the brew guide timer, then rate how it tasted.</p>
+          <p><a href="#/recipes/hoffmann-v60/guide">Try the Ultimate V60 with the guide →</a></p>
+        </div>
+      </div>
+    </section>` };
+}
+
+function Coffees(q) {
+  return { title: 'My coffees', nav: 'coffees', html: `
+    <header class="page-head">
+      <div class="page-head-row"><div class="stack"><p class="eyebrow">Your bags</p><h1 tabindex="-1">My coffees</h1></div>
+      <a class="btn btn-primary" href="#/coffees/new">${ic('plus')}Add coffee</a></div>
+    </header>
+    <div class="filter-bar">
+      <div role="group" aria-label="Filter by status" class="segmented" id="status-filter"></div>
+      <div class="field" style="flex:1;min-width:min(100%,240px);margin:0">
+        <label for="coffee-search" class="visually-hidden">Search coffees</label>
+        <div class="input-unit"><input id="coffee-search" class="input" type="search" placeholder="Search name, roaster, origin…" style="font-family:var(--font-body)" value="${esc(q.get('q') || '')}"><span class="unit">${ic('search', 'icon--sm')}</span></div>
+      </div>
+    </div>
+    <p class="visually-hidden" id="coffee-count" aria-live="polite"></p>
+    <div id="coffee-results"></div>`,
+    mount(root) {
+      let status = q.get('status') || 'active', term = q.get('q') || '';
+      const draw = () => {
+        const counts = { active: 0, finished: 0, all: coffees.length };
+        coffees.forEach(c => counts[c.status]++);
+        $('#status-filter', root).innerHTML = [['active', 'Active'], ['finished', 'Finished'], ['all', 'All']].map(([k, l]) =>
+          `<button type="button" class="filter-chip" data-status="${k}" aria-pressed="${k === status}">${l} <span class="count">${counts[k]}</span></button>`).join('');
+        const t = term.trim().toLowerCase();
+        const list = coffees.filter(c => (status === 'all' || c.status === status) &&
+          (!t || [c.name, c.roaster, c.country, c.region, c.process].join(' ').toLowerCase().includes(t)));
+        $('#coffee-count', root).textContent = `${plural(list.length, 'coffee')} shown`;
+        $('#coffee-results', root).innerHTML = list.length ? `<div class="grid">${list.map(coffeeCard).join('')}</div>` :
+          (coffees.length ? emptyState('search', 'No coffees match', 'Try another search term or status.', `<button class="btn btn-secondary" type="button" id="clear-coffee">Clear filters</button>`)
+            : emptyState('package', 'No coffees yet', 'Add the bag you are drinking now — roaster, origin and roast date are enough to start.', `<a class="btn btn-primary" href="#/coffees/new">Add your first coffee</a>`));
+        const p = new URLSearchParams(); if (status !== 'active') p.set('status', status); if (term) p.set('q', term);
+        history.replaceState(null, '', '#/coffees' + (p.toString() ? '?' + p : ''));
+      };
+      root.addEventListener('click', e => {
+        const b = e.target.closest('[data-status]'); if (b) { status = b.dataset.status; draw(); $(`[data-status="${status}"]`, root).focus(); }
+        if (e.target.closest('#clear-coffee')) { status = 'all'; term = ''; $('#coffee-search', root).value = ''; draw(); }
+      });
+      $('#coffee-search', root).addEventListener('input', e => { term = e.target.value; clearTimeout(this.t); this.t = setTimeout(draw, 150); });
+      draw();
+    } };
+}
+
+function CoffeeDetail(id) {
+  const c = byId(coffees, id);
+  if (!c) return NotFound();
+  const list = brewsFor('coffee', id).sort((a, b) => b.date.localeCompare(a.date));
+  const best = bestBrew(id), br = best && byId(recipes, best.recipe);
+  const d = daysOff(c);
+  const fact = (k, v) => v || v === 0 ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : '';
+  return { title: c.name, nav: 'coffees', html: `
+    <a class="back-link" href="#/coffees">${ic('left', 'icon--sm')}My coffees</a>
+    <header class="page-head">
+      <div class="badges">${freshBadge(c)}${c.sca ? `<span class="badge badge--outline">SCA <span class="num">${c.sca}</span></span>` : ''}</div>
+      <h1 tabindex="-1">${esc(c.name)}</h1>
+      <p class="lead">${esc([c.roaster, [c.region, c.country].filter(Boolean).join(', '), c.process].filter(Boolean).join(' · '))}</p>
+      <div class="actions">
+        ${c.status === 'active' ? `<a class="btn btn-primary" href="#/log?coffee=${c.id}">${ic('coffee')}Brew this coffee</a>` : ''}
+        <a class="btn btn-secondary" href="#/coffees/new?edit=${c.id}">${ic('pencil')}Edit</a>
+        <button class="btn btn-ghost" type="button" id="toggle-status">${ic('archive')}${c.status === 'active' ? 'Mark as finished' : 'Move back to active'}</button>
+      </div>
+    </header>
+    <div class="split">
+      <div class="stack" style="gap:var(--space-lg)">
+        <section class="card" aria-labelledby="h-bag">
+          <h2 id="h-bag" style="margin-bottom:var(--space-md)">The bag</h2>
+          <dl class="facts">
+            ${fact('Roaster', c.roaster)}${fact('Country', c.country)}${fact('Region', c.region)}${fact('Farm / producer', c.farm)}
+            ${fact('Variety', c.variety)}${fact('Process', c.process)}${fact('Altitude', c.altitude ? c.altitude.toLocaleString('en-US') + ' m' : '')}
+            ${fact('Roast level', c.roastLevel)}${fact('Roast date', c.roastDate ? `${fmtDate(c.roastDate, { day: 'numeric', month: 'short', year: 'numeric' })} (${d} days ago)` : '')}
+            ${fact('Form', c.form)}${fact('Bag', c.weight ? c.weight + ' g' : '')}${fact('Price', c.price)}${fact('Purchased', c.purchased ? fmtDate(c.purchased, { day: 'numeric', month: 'short', year: 'numeric' }) : '')}
+          </dl>
+          ${c.notes?.length ? `<h3 style="margin-top:var(--space-lg)">Roaster’s tasting notes</h3><ul class="chips">${c.notes.map(t => `<li class="chip">${esc(t)}</li>`).join('')}</ul>` : ''}
+          ${c.personal ? `<h3 style="margin-top:var(--space-lg)">My notes</h3><p class="muted" style="margin-top:4px">${esc(c.personal)}</p>` : ''}
+        </section>
+      </div>
+      <div class="stack" style="gap:var(--space-lg)">
+        ${best ? `<section class="card card--feature" aria-labelledby="h-best">
+          <p class="eyebrow">${ic('trophy', 'icon--sm')} Best brew so far</p>
+          <h2 id="h-best" class="card-title" style="font-size:1.5rem">${esc(methodOf(br).name)} · ${esc(br.name)}</h2>
+          <p style="display:flex;gap:8px;align-items:center" class="card-meta">${stars(best.rating)}<span>${fmtDate(best.date)}</span></p>
+          <p class="stat-line"><span>${best.dose} g</span><span>${best.water} g</span><span>${ratio(best.dose, best.water)}</span><span>${best.temp} °C</span><span>${esc(best.grinder || '')}</span></p>
+          ${best.notes ? `<p style="margin-top:var(--space-sm);font-style:italic">“${esc(best.notes)}”</p>` : ''}
+          ${c.status === 'active' ? `<div class="actions"><a class="btn btn-secondary" href="#/log?coffee=${c.id}&recipe=${br.id}">${ic('reset')}Brew it again</a></div>` : ''}
+        </section>` : ''}
+        <section aria-labelledby="h-brews">
+          <div class="section-head"><h2 id="h-brews">Brews <span class="mono muted" style="font-size:1rem">(${list.length})</span></h2>${list.length ? `<a href="#/history?coffee=${c.id}">In history</a>` : ''}</div>
+          ${list.length ? `<ul class="brew-list">${list.map(b => brewItem(b)).join('')}</ul>` :
+            emptyState('coffee', 'Not brewed yet', 'Log your first cup of this coffee to start finding its best recipe.', c.status === 'active' ? `<a class="btn btn-primary" href="#/log?coffee=${c.id}">Brew this coffee</a>` : '')}
+        </section>
+      </div>
+    </div>`,
+    mount(root) {
+      $('#toggle-status', root).addEventListener('click', () => {
+        const prev = c.status;
+        c.status = prev === 'active' ? 'finished' : 'active';
+        render();
+        toast(c.status === 'finished' ? 'Bag marked as finished.' : 'Bag moved back to active.', { label: 'Undo', fn: () => { c.status = prev; render(); } });
+      });
+    } };
+}
+
+function CoffeeForm(q) {
+  const editing = q.get('edit') ? byId(coffees, q.get('edit')) : null;
+  const v = editing || { form: 'Whole bean', status: 'active' };
+  const ret = q.get('return');
+  const sel = (name, opts, cur) => `<select class="input" id="f-${name}" name="${name}"><option value="">—</option>${opts.map(o => `<option ${o === cur ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+  const field = (name, label, { req = false, type = 'text', hint = '', unit = '', val = v[name], attrs = '' } = {}) => `
+    <div class="field">
+      <label for="f-${name}">${label}${req ? ' <span class="req">(required)</span>' : ''}</label>
+      ${unit ? `<div class="input-unit">` : ''}<input class="input" id="f-${name}" name="${name}" type="${type}" value="${esc(val ?? '')}" ${req ? 'aria-required="true"' : ''} aria-describedby="${hint ? `h-${name} ` : ''}e-${name}" ${attrs}>${unit ? `<span class="unit">${unit}</span></div>` : ''}
+      ${hint ? `<p class="hint" id="h-${name}">${hint}</p>` : ''}
+      <p class="field-error" id="e-${name}"></p>
+    </div>`;
+  return { title: editing ? 'Edit coffee' : 'Add coffee', nav: 'coffees', html: `
+    <a class="back-link" href="${editing ? `#/coffees/${editing.id}` : ret === 'log' ? '#/log' : '#/coffees'}">${ic('left', 'icon--sm')}${editing ? 'Back to coffee' : ret === 'log' ? 'Back to Log a brew' : 'My coffees'}</a>
+    <header class="page-head"><h1 tabindex="-1">${editing ? 'Edit coffee' : 'Add a coffee'}</h1>
+      <p class="lead">Only the basics are required. Copy the rest from the bag whenever you like.</p></header>
+    <form class="form" id="coffee-form" novalidate>
+      <div id="error-slot"></div>
+      <fieldset><legend>The basics</legend>
+        ${field('name', 'Coffee name', { req: true, hint: 'As printed on the bag, e.g. “Fazenda Santa Inês — Yellow Bourbon”.' })}
+        <div class="field-row">${field('roaster', 'Roaster', { req: true, attrs: 'autocomplete="organization"' })}${field('country', 'Country of origin', { req: true, attrs: 'autocomplete="country-name"' })}</div>
+        <div class="field"><span class="label" id="l-form">Form <span class="req">(required)</span></span>
+          <div class="segmented" role="radiogroup" aria-labelledby="l-form">${['Whole bean', 'Pre-ground'].map(o => `<label><input type="radio" name="form" value="${o}" ${v.form === o ? 'checked' : ''}>${o}</label>`).join('')}</div></div>
+      </fieldset>
+      <fieldset><legend>Roast</legend>
+        <div class="field-row">
+          <div class="field"><label for="f-roastLevel">Roast level</label>${sel('roastLevel', ['Light', 'Medium-light', 'Medium', 'Medium-dark', 'Dark'], v.roastLevel)}</div>
+          ${field('roastDate', 'Roast date', { type: 'date', hint: 'Used to show days off roast.' })}
+        </div>
+      </fieldset>
+      <details class="more" ${editing ? 'open' : ''}><summary>More details: origin, bag &amp; notes ${ic('right', 'chev')}</summary>
+        <div class="more-body">
+          <div class="field-row">${field('region', 'Region')}${field('farm', 'Farm / producer')}</div>
+          <div class="field-row">${field('variety', 'Variety', { hint: 'Separate several with commas.' })}
+            <div class="field"><label for="f-process">Process</label>${sel('process', ['Washed', 'Natural', 'Honey', 'Anaerobic', 'Other'], v.process)}</div></div>
+          <div class="field-row">${field('altitude', 'Altitude', { unit: 'm', attrs: 'inputmode="numeric"' })}${field('sca', 'SCA score', { attrs: 'inputmode="decimal"' })}</div>
+          ${field('notes', 'Roaster’s tasting notes', { val: (v.notes || []).join(', '), hint: 'Comma separated, e.g. chocolate, caramel, yellow fruits.' })}
+          <div class="field-row">${field('weight', 'Bag weight', { unit: 'g', attrs: 'inputmode="numeric"' })}${field('price', 'Price', { attrs: 'inputmode="decimal"' })}${field('purchased', 'Purchase date', { type: 'date' })}</div>
+          <div class="field"><label for="f-personal">Personal notes</label><textarea class="input" id="f-personal" name="personal">${esc(v.personal || '')}</textarea></div>
+        </div>
+      </details>
+      <div class="actions"><button class="btn btn-primary" type="submit">${ic('check')}${editing ? 'Save changes' : 'Save coffee'}</button><a class="btn btn-ghost" href="${editing ? `#/coffees/${editing.id}` : '#/coffees'}">Cancel</a></div>
+    </form>`,
+    mount(root) {
+      const form = $('#coffee-form', root);
+      const rules = { name: 'Enter the coffee name.', roaster: 'Enter the roaster.', country: 'Enter the country of origin.' };
+      const check = name => { const el = form.elements[name], bad = !el.value.trim(); el.setAttribute('aria-invalid', bad); $(`#e-${name}`, root).innerHTML = bad ? ic('alert', 'icon--sm') + rules[name] : ''; return !bad; };
+      // Errors appear on blur/submit and clear while typing the fix (clearing on blur would shift the layout under the pointer).
+      Object.keys(rules).forEach(n => form.elements[n].addEventListener('input', e => { if (e.target.getAttribute('aria-invalid') === 'true' && e.target.value.trim()) check(n); }));
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const bad = Object.keys(rules).filter(n => !check(n));
+        if (bad.length) {
+          $('#error-slot', root).innerHTML = `<div class="error-summary" tabindex="-1" role="alert"><h2>${ic('alert')}There ${bad.length === 1 ? 'is a problem' : `are ${bad.length} problems`}</h2><ul>${bad.map(n => `<li><a href="#f-${n}" data-focus="f-${n}">${rules[n]}</a></li>`).join('')}</ul></div>`;
+          $('.error-summary', root).focus();
+          return;
+        }
+        const f = Object.fromEntries(new FormData(form));
+        const data = { ...f, notes: f.notes ? f.notes.split(',').map(s => s.trim()).filter(Boolean) : [], altitude: f.altitude ? +f.altitude : undefined, sca: f.sca ? +f.sca : undefined, weight: f.weight ? +f.weight : undefined };
+        let target;
+        if (editing) { Object.assign(editing, data); target = editing; }
+        else { target = { id: 'c' + Date.now(), status: 'active', ...data }; coffees.unshift(target); }
+        toast(editing ? 'Changes saved.' : `${target.name} added to your coffees.`);
+        location.hash = ret === 'log' ? `#/log?coffee=${target.id}` : `#/coffees/${target.id}`;
+      });
+      root.addEventListener('click', e => { const a = e.target.closest('[data-focus]'); if (a) { e.preventDefault(); const el = document.getElementById(a.dataset.focus); el.closest('details')?.setAttribute('open', ''); el.focus(); } });
+    } };
+}
+
+function Recipes(q) {
+  return { title: 'Methods & recipes', nav: 'recipes', html: `
+    <header class="page-head">
+      <div class="page-head-row"><div class="stack"><p class="eyebrow">Methods &amp; recipes</p><h1 tabindex="-1">How do you want to brew?</h1></div>
+      <button class="btn btn-primary" type="button" id="new-recipe">${ic('plus')}New recipe</button></div>
+    </header>
+    <div class="filter-bar" role="group" aria-label="Filter by method" id="method-filter"></div>
+    <div id="method-info"></div>
+    <p class="visually-hidden" aria-live="polite" id="recipe-count"></p>
+    <div id="recipe-results"></div>`,
+    mount(root) {
+      let m = q.get('method') || 'all';
+      const draw = () => {
+        $('#method-filter', root).innerHTML = [['all', 'All methods'], ...METHODS.map(x => [x.id, x.name])].map(([k, l]) =>
+          `<button type="button" class="filter-chip" data-m="${k}" aria-pressed="${k === m}">${l} <span class="count">${k === 'all' ? recipes.length : recipes.filter(r => r.method === k).length}</span></button>`).join('');
+        const meth = byId(METHODS, m);
+        $('#method-info', root).innerHTML = meth ? `<div class="card" style="margin-bottom:var(--space-lg)"><div class="badges"><span class="badge badge--outline">${esc(meth.type)}</span><span class="badge badge--outline">${esc(meth.filter)} filter</span></div><h2 class="card-title" style="font-size:1.5rem">${esc(meth.name)}</h2><p class="muted readable">${esc(meth.desc)}</p></div>` : '';
+        const list = recipes.filter(r => m === 'all' || r.method === m);
+        $('#recipe-count', root).textContent = `${plural(list.length, 'recipe')} shown`;
+        $('#recipe-results', root).innerHTML = list.length ? `<div class="grid">${list.map(recipeCard).join('')}</div>` : emptyState('book', 'No recipes for this method yet', 'Duplicate a built-in recipe or create your own.', '');
+        history.replaceState(null, '', '#/recipes' + (m !== 'all' ? `?method=${m}` : ''));
+      };
+      root.addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (b) { m = b.dataset.m; draw(); $(`[data-m="${m}"]`, root).focus(); } });
+      $('#new-recipe', root).addEventListener('click', () => toast('Recipe editor is out of scope for this prototype — duplicate a built-in recipe instead.'));
+      draw();
+    } };
+}
+
+function RecipeDetail(id) {
+  const r = byId(recipes, id);
+  if (!r) return NotFound();
+  const m = methodOf(r);
+  const mine = brewsFor('recipe', id).sort((a, b) => b.date.localeCompare(a.date));
+  return { title: r.name, nav: 'recipes', html: `
+    <a class="back-link" href="#/recipes?method=${r.method}">${ic('left', 'icon--sm')}${esc(m.name)} recipes</a>
+    <header class="page-head">
+      <div class="badges"><span class="badge badge--outline">${esc(m.name)} · ${esc(m.type)}</span>${r.builtIn ? '<span class="badge badge--builtin">Built-in · read-only</span>' : '<span class="badge">Mine</span>'}</div>
+      <h1 tabindex="-1">${esc(r.name)}</h1>
+      <p class="lead">${esc(r.author || 'My recipe')}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#/recipes/${r.id}/guide">${ic('timer')}Start brew guide</a>
+        <a class="btn btn-secondary" href="#/log?recipe=${r.id}">${ic('plus')}Log a brew</a>
+        <button class="btn btn-ghost" type="button" id="dup">${ic('copy')}Duplicate &amp; edit</button>
+      </div>
+    </header>
+    <div class="split">
+      <div class="stack" style="gap:var(--space-lg)">
+        <dl class="stats">
+          <div class="stat"><dt>Dose</dt><dd>${r.dose} g</dd></div>
+          <div class="stat"><dt>Water</dt><dd>${r.water} g</dd></div>
+          <div class="stat"><dt>Ratio</dt><dd>${ratio(r.dose, r.water)}${r.ratioNote ? `<small>${esc(r.ratioNote)}</small>` : ''}</dd></div>
+          <div class="stat"><dt>Temp</dt><dd>${tempLabel(r)}${r.tempNote ? `<small>${esc(r.tempNote)}</small>` : ''}</dd></div>
+          <div class="stat"><dt>Grind</dt><dd style="font-family:var(--font-body);font-size:1rem">${esc(r.grind)}</dd></div>
+          <div class="stat"><dt>Time</dt><dd>${mmss(r.time)}</dd></div>
+        </dl>
+        ${r.idea ? `<div class="card card--tip"><span class="tip-icon">${ic('lightbulb')}</span><p>${esc(r.idea)}</p></div>` : ''}
+        <section class="card" aria-labelledby="h-steps" style="padding:var(--space-md)">
+          <h2 id="h-steps" style="margin:4px 8px var(--space-sm)">Steps</h2>
+          <table class="steps-table"><thead><tr><th scope="col">Time</th><th scope="col">Action</th></tr></thead>
+          <tbody>${r.steps.map(s => `<tr><td>${s.at}</td><td>${esc(s.text)}${s.target ? ` <span class="target">→ ${s.target} g</span>` : ''}</td></tr>`).join('')}</tbody></table>
+        </section>
+      </div>
+      <section aria-labelledby="h-mine">
+        <div class="section-head"><h2 id="h-mine">Your brews with this recipe</h2></div>
+        ${mine.length ? `<ul class="brew-list">${mine.map(b => brewItem(b)).join('')}</ul>` : emptyState('coffee', 'Not tried yet', 'Follow the brew guide, then log how it tasted.', `<a class="btn btn-secondary" href="#/recipes/${r.id}/guide">Start brew guide</a>`)}
+      </section>
+    </div>`,
+    mount(root) {
+      $('#dup', root).addEventListener('click', () => {
+        const copy = { ...r, id: r.id + '-copy-' + Date.now().toString(36), name: r.name + ' (my version)', builtIn: false, author: 'Based on ' + (r.author || r.name), steps: r.steps.map(s => ({ ...s })) };
+        recipes.push(copy);
+        toast('Copied to your recipes. You can edit this one.');
+        location.hash = `#/recipes/${copy.id}`;
+      });
+    } };
+}
+
+function Guide(id) {
+  const r = byId(recipes, id);
+  if (!r) return NotFound();
+  const C = 2 * Math.PI * 140;
+  return { title: `Brew guide · ${r.name}`, nav: null, focus: true, html: `
+    <div class="guide-bar">
+      <a class="btn btn-ghost" href="#/recipes/${r.id}">${ic('x')}Exit guide</a>
+      <span class="title">${esc(methodOf(r).name)} · ${esc(r.name)}</span>
+    </div>
+    <h1 class="visually-hidden" tabindex="-1">Brew guide: ${esc(r.name)}</h1>
+    <div class="guide">
+      <section class="guide-panel" aria-label="Timer">
+        <div class="timer">
+          <svg viewBox="0 0 300 300" aria-hidden="true"><circle class="track" cx="150" cy="150" r="140" fill="none" stroke-width="10"/><circle class="prog" id="ring" cx="150" cy="150" r="140" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}"/></svg>
+          <div class="timer-read"><div class="timer-time" id="clock" role="timer" aria-label="Elapsed time">0:00</div><div class="timer-total">of ${mmss(r.time)}</div></div>
+        </div>
+        <div class="now-card"><p class="label" id="now-label">Now</p><p class="text" id="now-text"></p></div>
+        <p class="next-text" id="next-text"></p>
+        <div class="guide-controls">
+          <button class="btn btn-primary btn-lg" type="button" id="toggle">${ic('play')}Start</button>
+          <button class="btn btn-secondary btn-lg" type="button" id="reset" style="min-width:auto">${ic('reset')}Reset</button>
+        </div>
+        <div class="guide-controls">
+          <button class="btn btn-ghost" type="button" id="prev">${ic('left')}Previous step</button>
+          <button class="btn btn-ghost" type="button" id="next">Next step${ic('right')}</button>
+        </div>
+        <p class="kbd-hint"><kbd>Space</kbd> start/pause · <kbd>←</kbd> <kbd>→</kbd> steps</p>
+        <div id="done-slot" style="width:100%"></div>
+      </section>
+      <section aria-labelledby="h-all">
+        <h2 id="h-all" style="margin-bottom:var(--space-md)">All steps</h2>
+        <div class="stats" style="margin-bottom:var(--space-md)">
+          <div class="stat"><dt>Dose</dt><dd>${r.dose} g</dd></div><div class="stat"><dt>Water</dt><dd>${r.water} g</dd></div>
+          <div class="stat"><dt>Temp</dt><dd>${tempLabel(r)}</dd></div><div class="stat"><dt>Grind</dt><dd style="font-family:var(--font-body);font-size:1rem">${esc(r.grind)}</dd></div>
+        </div>
+        <ol class="step-list" id="step-list"></ol>
+      </section>
+    </div>
+    <p class="visually-hidden" aria-live="polite" id="step-announce"></p>`,
+    mount(root) {
+      let elapsed = 0, running = false, timer = null, idx = 0, wake = null, startedAt = 0, base = 0;
+      const steps = r.steps;
+      const stepText = s => `${esc(s.text)}${s.target ? ` <span class="target">Pour to ${s.target} g</span>` : ''}`;
+      const draw = (announce) => {
+        $('#clock', root).textContent = mmss(elapsed);
+        $('#ring', root).setAttribute('stroke-dashoffset', C * (1 - Math.min(elapsed / r.time, 1)));
+        const s = steps[idx], n = steps[idx + 1];
+        $('#now-label', root).textContent = `Step ${idx + 1} of ${steps.length} · ${s.at}`;
+        $('#now-text', root).innerHTML = stepText(s);
+        $('#next-text', root).innerHTML = n ? `<strong>Next at ${n.at}:</strong> ${esc(n.text)}` : '';
+        $('#step-list', root).innerHTML = steps.map((st, i) => `<li class="${i < idx ? 'past' : i === idx ? 'current' : ''}" ${i === idx ? 'aria-current="step"' : ''}><span class="at">${st.at}</span><span>${stepText(st)}${i === idx ? '<span class="now-tag">Now</span>' : ''}</span></li>`).join('');
+        $('#toggle', root).innerHTML = running ? `${ic('pause')}Pause` : `${ic('play')}${elapsed ? 'Resume' : 'Start'}`;
+        $('#prev', root).disabled = idx === 0; $('#next', root).disabled = idx === steps.length - 1;
+        if (announce) $('#step-announce', root).textContent = `Step ${idx + 1} of ${steps.length} at ${s.at}: ${s.text}${s.target ? ` Pour to ${s.target} grams.` : ''}`;
+        const done = elapsed >= r.time;
+        $('#done-slot', root).innerHTML = done ? `<div class="card card--feature" style="text-align:center"><h3>Done — how did it taste?</h3><p class="muted" style="margin:6px 0 var(--space-md)">Brewed in <span class="mono">${mmss(elapsed)}</span>.</p><a class="btn btn-primary" href="#/log?recipe=${r.id}&time=${mmss(elapsed)}">${ic('star')}Log this brew</a></div>` : '';
+      };
+      const autoStep = () => { let i = idx; while (steps[i + 1] && steps[i + 1].t !== null && steps[i + 1].t <= elapsed) i++; if (i !== idx) { idx = i; return true; } return false; };
+      const tick = () => { elapsed = base + Math.floor((Date.now() - startedAt) / 1000); const changed = autoStep(); draw(changed); };
+      const start = async () => {
+        running = true; startedAt = Date.now(); base = elapsed;
+        if (steps[idx].t === null) { idx++; }
+        timer = setInterval(tick, 250); draw(true);
+        try { wake = await navigator.wakeLock?.request('screen'); } catch (_) { /* not supported */ }
+      };
+      const pause = () => { running = false; clearInterval(timer); tick(); running = false; draw(); wake?.release?.(); wake = null; };
+      $('#toggle', root).addEventListener('click', () => running ? pause() : start());
+      $('#reset', root).addEventListener('click', () => { clearInterval(timer); running = false; elapsed = 0; base = 0; idx = 0; draw(true); wake?.release?.(); });
+      $('#prev', root).addEventListener('click', () => { if (idx > 0) { idx--; draw(true); } });
+      $('#next', root).addEventListener('click', () => { if (idx < steps.length - 1) { idx++; draw(true); } });
+      const onKey = e => {
+        if (e.target.closest('input, textarea, select')) return;
+        if (e.code === 'Space' && !e.target.closest('button, a')) { e.preventDefault(); running ? pause() : start(); }
+        if (e.key === 'ArrowRight') $('#next', root).click();
+        if (e.key === 'ArrowLeft') $('#prev', root).click();
+      };
+      document.addEventListener('keydown', onKey);
+      draw();
+      return () => { clearInterval(timer); document.removeEventListener('keydown', onKey); wake?.release?.(); };
+    } };
+}
+
+function LogBrew(q) {
+  const st = { step: 1, coffee: q.get('coffee') || '', recipe: q.get('recipe') || '', method: 'all', rating: 0, sensory: { acidity: 3, sweetness: 3, body: 3, bitterness: 3 }, touchedSensory: false, dirty: false };
+  if (st.coffee && !byId(coffees, st.coffee)) st.coffee = '';
+  if (st.recipe && !byId(recipes, st.recipe)) st.recipe = '';
+  const preTime = q.get('time');
+  const applyRecipe = () => { const r = byId(recipes, st.recipe); if (r) { st.dose = r.dose; st.water = r.water; st.temp = r.temp; st.time = preTime || ''; st.method = r.method; } };
+  applyRecipe();
+  st.step = !st.coffee ? 1 : !st.recipe ? 2 : 3;
+  const lastFor = cid => brewsFor('coffee', cid).sort((a, b) => b.date.localeCompare(a.date))[0];
+  const LABELS = ['Coffee', 'Recipe', 'Brew & taste'];
+
+  const stepCoffee = () => {
+    const active = coffees.filter(c => c.status === 'active');
+    return `<fieldset><legend>Which coffee?</legend>
+      <p class="hint" id="e-coffee-h">Only open bags are shown.</p>
+      <div class="radio-grid">${active.map(c => `<label class="radio-card"><input type="radio" name="coffee" value="${c.id}" ${st.coffee === c.id ? 'checked' : ''} aria-describedby="e-coffee"><span class="rc-title">${esc(c.name)}</span><span class="rc-sub">${esc(c.roaster)} · ${daysOff(c)} days off roast</span></label>`).join('')}</div>
+      <p class="field-error" id="e-coffee" style="margin-top:8px"></p>
+      <p style="margin-top:var(--space-md)"><a href="#/coffees/new?return=log">${ic('plus', 'icon--sm')} Add a new coffee</a></p>
+    </fieldset>`;
+  };
+  const stepRecipe = () => {
+    const last = st.coffee && lastFor(st.coffee);
+    const list = recipes.filter(r => st.method === 'all' || r.method === st.method);
+    return `<fieldset><legend>Which recipe?</legend>
+      <div class="filter-bar" role="group" aria-label="Filter by method" style="margin:8px 0 0">${[['all', 'All'], ...METHODS.map(m => [m.id, m.name])].map(([k, l]) => `<button type="button" class="filter-chip" data-m="${k}" aria-pressed="${st.method === k}">${l}</button>`).join('')}</div>
+      <div class="radio-grid">${list.map(r => `<label class="radio-card"><input type="radio" name="recipe" value="${r.id}" ${st.recipe === r.id ? 'checked' : ''} aria-describedby="e-recipe"><span class="rc-title">${esc(r.name)}</span><span class="rc-sub">${esc(methodOf(r).name)} · ${esc(r.author || 'My recipe')}${last && last.recipe === r.id ? ' · <strong>Last used</strong>' : ''}</span>${statLine(r)}</label>`).join('')}</div>
+      <p class="field-error" id="e-recipe" style="margin-top:8px"></p>
+    </fieldset>`;
+  };
+  const num = (name, label, unit, orig) => `<div class="field"><label for="f-${name}">${label}</label><div class="input-unit"><input class="input" id="f-${name}" name="${name}" inputmode="decimal" value="${esc(st[name] ?? '')}" aria-describedby="h-${name}"><span class="unit">${unit}</span></div><p class="hint" id="h-${name}" data-orig="${orig}" data-unit="${unit}">${st[name] != orig ? `Changed from ${orig} ${unit}` : 'From the recipe'}</p></div>`;
+  const stepBrew = () => {
+    const c = byId(coffees, st.coffee), r = byId(recipes, st.recipe);
+    return `<p class="muted" style="margin-bottom:var(--space-md)"><strong style="color:var(--color-foreground)">${esc(c.name)}</strong> with <strong style="color:var(--color-foreground)">${esc(r.name)}</strong> (${esc(methodOf(r).name)}) · <a href="#" data-goto="1">change</a></p>
+      <fieldset><legend>What you actually did</legend>
+        <p class="hint">Pre-filled from the recipe. Change anything you adjusted.</p>
+        <div class="field-row" style="margin-top:var(--space-md)">${num('dose', 'Dose', 'g', r.dose)}${num('water', 'Water', 'g', r.water)}${num('temp', 'Temperature', '°C', r.temp)}</div>
+        <div class="ratio-out"><span>Ratio</span><strong id="ratio" aria-live="polite">${ratio(st.dose, st.water)}</strong><span class="muted">recipe ${ratio(r.dose, r.water)}</span></div>
+        <div class="field-row" style="margin-top:var(--space-md)">
+          <div class="field"><label for="f-grinder">Grinder &amp; setting</label><input class="input" id="f-grinder" name="grinder" value="${esc(st.grinder || lastFor(st.coffee)?.grinder || '')}" aria-describedby="h-grinder"><p class="hint" id="h-grinder">e.g. Comandante — 24 clicks. Recipe says: ${esc(r.grind.toLowerCase())}.</p></div>
+          <div class="field"><label for="f-time">Total time</label><input class="input mono" id="f-time" name="time" inputmode="numeric" placeholder="3:30" value="${esc(st.time || '')}" aria-describedby="h-time e-time"><p class="hint" id="h-time">Minutes:seconds. Recipe: ${mmss(r.time)}.</p><p class="field-error" id="e-time"></p></div>
+        </div>
+      </fieldset>
+      <fieldset><legend>How did it taste?</legend>
+        <div class="field"><span class="label" id="l-rating">Rating <span class="req">(required)</span></span>
+          <div class="rating-input" role="radiogroup" aria-labelledby="l-rating" aria-describedby="e-rating">
+            ${[1, 2, 3, 4, 5].map(i => `<input type="radio" name="rating" id="rate-${i}" value="${i}" ${st.rating === i ? 'checked' : ''}><label for="rate-${i}" class="${i <= st.rating ? 'on' : ''}">${ic('star')}<span class="visually-hidden">${i} star${i > 1 ? 's' : ''}</span></label>`).join('')}
+            <span class="rating-value" id="rating-value" aria-hidden="true">${st.rating ? st.rating + ' / 5' : 'Not rated'}</span>
+          </div>
+          <p class="field-error" id="e-rating"></p>
+        </div>
+        <div class="field"><label for="f-notes">Tasting notes</label><textarea class="input" id="f-notes" name="notes" placeholder="Sweet, a bit sour at the end…">${esc(st.notes || '')}</textarea></div>
+      </fieldset>
+      <details class="more"><summary>Sensory sliders &amp; next time ${ic('right', 'chev')}</summary>
+        <div class="more-body">
+          ${Object.entries(st.sensory).map(([k, v]) => `<div class="slider"><div class="slider-head"><label for="s-${k}" style="font-weight:600;text-transform:capitalize">${k}</label><output for="s-${k}" id="o-${k}">${v} / 5</output></div><input type="range" id="s-${k}" name="s-${k}" min="1" max="5" step="1" value="${v}" aria-valuetext="${v} out of 5"><div class="slider-ends" aria-hidden="true"><span>Low</span><span>High</span></div></div>`).join('')}
+          <div class="field"><label for="f-next">What to change next time</label><textarea class="input" id="f-next" name="next" placeholder="Grind 2 clicks finer">${esc(st.next || '')}</textarea></div>
+        </div>
+      </details>`;
+  };
+
+  return { title: 'Log a brew', nav: 'log', html: `
+    <header class="page-head readable"><p class="eyebrow">New entry</p><h1 tabindex="-1">Log a brew</h1></header>
+    <form class="form" id="log-form" novalidate>
+      <ol class="steps" id="steps"></ol>
+      <div id="log-errors"></div>
+      <div id="log-step"></div>
+      <div class="action-bar"><button class="btn btn-ghost" type="button" id="back">${ic('left')}Back</button><button class="btn btn-primary" type="submit" id="fwd"></button></div>
+    </form>`,
+    mount(root) {
+      const form = $('#log-form', root);
+      const save = () => {
+        const f = form.elements;
+        ['dose', 'water', 'temp', 'grinder', 'time', 'notes', 'next'].forEach(k => { if (f[k]) st[k] = f[k].value; });
+        Object.keys(st.sensory).forEach(k => { if (f['s-' + k]) st.sensory[k] = +f['s-' + k].value; });
+      };
+      const draw = (focusHeading) => {
+        $('#steps', root).innerHTML = LABELS.map((l, i) => `<li class="${i + 1 < st.step ? 'done' : ''}" ${i + 1 === st.step ? 'aria-current="step"' : ''}><span><span class="n">${i + 1}</span> ${l}${i + 1 < st.step ? '<span class="visually-hidden"> (done)</span>' : ''}</span></li>`).join('');
+        $('#log-step', root).innerHTML = st.step === 1 ? stepCoffee() : st.step === 2 ? stepRecipe() : stepBrew();
+        $('#log-errors', root).innerHTML = '';
+        $('#back', root).style.visibility = st.step === 1 ? 'hidden' : 'visible';
+        $('#fwd', root).innerHTML = st.step === 1 ? `Next: Recipe${ic('right')}` : st.step === 2 ? `Next: Brew &amp; taste${ic('right')}` : `${ic('check')}Save brew`;
+        if (focusHeading) { const lg = $('legend', root); if (lg) { lg.tabIndex = -1; lg.focus(); } }
+      };
+      const err = (name, msg) => { const el = $(`#e-${name}`, root); if (el) el.innerHTML = msg ? ic('alert', 'icon--sm') + msg : ''; };
+      form.addEventListener('change', e => {
+        st.dirty = true;
+        if (e.target.name === 'coffee') { st.coffee = e.target.value; err('coffee'); }
+        if (e.target.name === 'recipe') { st.recipe = e.target.value; applyRecipe(); err('recipe'); }
+        if (e.target.name === 'rating') {
+          st.rating = +e.target.value; err('rating');
+          $$('.rating-input label', root).forEach((l, i) => l.classList.toggle('on', i < st.rating));
+          $('#rating-value', root).textContent = `${st.rating} / 5`;
+        }
+      });
+      form.addEventListener('input', e => {
+        st.dirty = true;
+        const n = e.target.name;
+        if (['dose', 'water', 'temp'].includes(n)) {
+          save(); $('#ratio', root).textContent = ratio(+st.dose, +st.water);
+          const h = $(`#h-${n}`, root); h.textContent = e.target.value != h.dataset.orig ? `Changed from ${h.dataset.orig} ${h.dataset.unit}` : 'From the recipe'; h.classList.toggle('changed', e.target.value != h.dataset.orig);
+        }
+        if (n?.startsWith('s-')) { const k = n.slice(2); $(`#o-${k}`, root).textContent = `${e.target.value} / 5`; e.target.setAttribute('aria-valuetext', `${e.target.value} out of 5`); }
+        // Clear a time error as soon as the value is fixed (while typing), never on blur: collapsing it on blur shifts the layout under the pointer.
+        if (n === 'time' && e.target.getAttribute('aria-invalid') === 'true' && (!e.target.value.trim() || parseMmss(e.target.value) !== null)) { e.target.setAttribute('aria-invalid', 'false'); err('time', ''); }
+      });
+      form.addEventListener('focusout', e => { if (e.target.name === 'time') { const v = e.target.value.trim(); if (v && parseMmss(v) === null) { e.target.setAttribute('aria-invalid', 'true'); err('time', 'Use minutes:seconds, for example 3:30.'); } } });
+      root.addEventListener('click', e => {
+        const m = e.target.closest('[data-m]'); if (m) { st.method = m.dataset.m; draw(); $(`[data-m="${st.method}"]`, root).focus(); }
+        const g = e.target.closest('[data-goto]'); if (g) { e.preventDefault(); save(); st.step = +g.dataset.goto; draw(true); }
+        const a = e.target.closest('[data-focus]'); if (a) { e.preventDefault(); const el = document.getElementById(a.dataset.focus); el.closest('details')?.setAttribute('open', ''); el.focus(); }
+      });
+      $('#back', root).addEventListener('click', () => { save(); st.step--; draw(true); });
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        if (st.step === 1) { if (!st.coffee) { err('coffee', 'Choose a coffee to continue.'); $('input[name=coffee]', root)?.focus(); return; } st.step = 2; return draw(true); }
+        if (st.step === 2) { if (!st.recipe) { err('recipe', 'Choose a recipe to continue.'); $('input[name=recipe]', root)?.focus(); return; } st.step = 3; return draw(true); }
+        save();
+        const problems = [];
+        if (!st.rating) { problems.push(['rate-1', 'Rate this brew from 1 to 5 stars.']); err('rating', 'Rate this brew from 1 to 5 stars.'); }
+        if (st.time && parseMmss(st.time) === null) { problems.push(['f-time', 'Enter the total time as minutes:seconds, for example 3:30.']); err('time', 'Use minutes:seconds, for example 3:30.'); }
+        if (problems.length) {
+          $('#log-errors', root).innerHTML = `<div class="error-summary" tabindex="-1" role="alert"><h2>${ic('alert')}There ${problems.length === 1 ? 'is a problem' : `are ${problems.length} problems`}</h2><ul>${problems.map(([id, m]) => `<li><a href="#${id}" data-focus="${id}">${m}</a></li>`).join('')}</ul></div>`;
+          $('.error-summary', root).focus();
+          return;
+        }
+        const b = { id: 'b' + Date.now(), date: TODAY.toISOString().slice(0, 10) + 'T' + new Date().toTimeString().slice(0, 5), coffee: st.coffee, recipe: st.recipe,
+          dose: +st.dose, water: +st.water, temp: +st.temp, grinder: st.grinder, time: parseMmss(st.time) || 0, rating: st.rating,
+          sensory: $('details.more', root)?.open ? { ...st.sensory } : {}, notes: st.notes, next: st.next };
+        brews.push(b);
+        st.dirty = false;
+        toast(`Brew saved — ${plural(b.rating, 'star')} for ${byId(coffees, b.coffee).name}.`);
+        location.hash = `#/history?new=${b.id}`;
+      });
+      guard = () => !st.dirty || confirm('Discard this brew log? Your entries will be lost.');
+      draw();
+      return () => { guard = null; };
+    } };
+}
+
+function History(q) {
+  return { title: 'Brew history', nav: 'history', html: `
+    <header class="page-head"><p class="eyebrow">Your journal</p><h1 tabindex="-1">Brew history</h1></header>
+    <div class="filter-bar" id="hist-filters">
+      <div class="field" style="min-width:min(100%,220px);flex:1"><label for="h-coffee">Coffee</label><select class="input" id="h-coffee"><option value="">All coffees</option>${coffees.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></div>
+      <div class="field" style="min-width:150px"><label for="h-method">Method</label><select class="input" id="h-method"><option value="">All methods</option>${METHODS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select></div>
+      <div class="field" style="min-width:140px"><label for="h-rating">Rating</label><select class="input" id="h-rating"><option value="">Any</option>${[5, 4, 3, 2].map(n => `<option value="${n}">${n === 5 ? '5 stars' : n + '+ stars'}</option>`).join('')}</select></div>
+      <div class="field" style="min-width:150px"><label for="h-sort">Sort by</label><select class="input" id="h-sort"><option value="new">Newest first</option><option value="best">Best rated</option></select></div>
+    </div>
+    <p class="muted" aria-live="polite" id="hist-count" style="margin-bottom:var(--space-md)"></p>
+    <div id="hist-best"></div>
+    <div id="hist-results"></div>`,
+    mount(root) {
+      const f = { coffee: q.get('coffee') || '', method: q.get('method') || '', rating: q.get('rating') || '', sort: q.get('sort') || 'new' };
+      const isNew = q.get('new');
+      Object.entries(f).forEach(([k, v]) => { $(`#h-${k}`, root).value = v; });
+      const draw = () => {
+        let list = brews.filter(b => (!f.coffee || b.coffee === f.coffee) && (!f.method || byId(recipes, b.recipe).method === f.method) && (!f.rating || b.rating >= +f.rating));
+        list.sort(f.sort === 'best' ? (a, b) => b.rating - a.rating || b.date.localeCompare(a.date) : (a, b) => b.date.localeCompare(a.date));
+        $('#hist-count', root).textContent = `${plural(list.length, 'brew')}${f.coffee || f.method || f.rating ? ' match these filters' : ' logged'}`;
+        const best = f.coffee && bestBrew(f.coffee);
+        if (best) {
+          const c = byId(coffees, f.coffee), r = byId(recipes, best.recipe);
+          $('#hist-best', root).innerHTML = `<div class="card card--feature" style="margin-bottom:var(--space-lg)">
+            <p class="eyebrow">${ic('trophy', 'icon--sm')} Best way to brew ${esc(c.name)}</p>
+            <h2 class="card-title" style="font-size:1.5rem">${esc(methodOf(r).name)} · ${esc(r.name)}</h2>
+            <p class="card-meta" style="display:flex;gap:8px;align-items:center">${stars(best.rating)}<span>${fmtDate(best.date)}</span></p>
+            <p class="stat-line"><span>${best.dose} g</span><span>${best.water} g</span><span>${ratio(best.dose, best.water)}</span><span>${best.temp} °C</span><span>${esc(best.grinder || '')}</span></p>
+            ${c.status === 'active' ? `<div class="actions"><a class="btn btn-primary" href="#/log?coffee=${c.id}&recipe=${r.id}">${ic('reset')}Brew it again</a></div>` : ''}
+          </div>`;
+        } else $('#hist-best', root).innerHTML = '';
+        $('#hist-results', root).innerHTML = list.length ? `<ul class="brew-list">${list.map(b => brewItem(b, { open: b.id === isNew, isNew: b.id === isNew })).join('')}</ul>` :
+          brews.length ? emptyState('search', 'No brews match these filters', 'Try a different coffee, method or rating.', `<button class="btn btn-secondary" type="button" id="clear-hist">Clear filters</button>`)
+            : emptyState('coffee', 'No brews yet', 'Log your first cup — pick a coffee, pick a recipe, rate it.', `<a class="btn btn-primary" href="#/log">Log your first brew</a>`);
+        const p = new URLSearchParams(Object.entries(f).filter(([k, v]) => v && !(k === 'sort' && v === 'new')));
+        history.replaceState(null, '', '#/history' + (p.toString() ? '?' + p : ''));
+      };
+      $('#hist-filters', root).addEventListener('change', e => { f[e.target.id.slice(2)] = e.target.value; draw(); });
+      root.addEventListener('click', e => { if (e.target.closest('#clear-hist')) { Object.assign(f, { coffee: '', method: '', rating: '', sort: 'new' }); Object.entries(f).forEach(([k, v]) => { $(`#h-${k}`, root).value = v; }); draw(); $('#h-coffee', root).focus(); } });
+      draw();
+      if (isNew) setTimeout(() => $(`#brew-${isNew}`, root)?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }), 50);
+    } };
+}
+
+function SignIn() {
+  return { title: 'Sign in', nav: null, focus: true, html: `
+    <div class="auth"><div class="card">
+      <a class="brand" href="#/" style="margin-bottom:var(--space-lg)"><span class="brand-mark">${ic('coffee')}</span>Coffee Nerds</a>
+      <h1 tabindex="-1" style="font-size:1.75rem">Welcome back</h1>
+      <p class="muted" style="margin:6px 0 var(--space-lg)">Your coffee journal is private — only you can see it.</p>
+      <form class="stack" style="gap:var(--space-md)" id="signin" novalidate>
+        <div class="field"><label for="email">Email</label><input class="input" id="email" type="email" autocomplete="username" inputmode="email" required></div>
+        <div class="field"><label for="pw">Password</label>
+          <div style="position:relative"><input class="input" id="pw" type="password" autocomplete="current-password" required style="padding-right:56px">
+          <button class="icon-btn" type="button" id="pw-toggle" aria-label="Show password" aria-pressed="false" style="position:absolute;right:2px;top:0">${ic('eye')}</button></div>
+          <p class="hint"><a href="#/signin">Forgot password?</a></p></div>
+        <button class="btn btn-primary" type="submit">Sign in</button>
+        <div class="divider">or</div>
+        <button class="btn btn-secondary" type="button" id="magic">${ic('mail')}Email me a sign-in link</button>
+        <p class="muted" style="text-align:center;font-size:.9375rem">New here? <a href="#/signin">Create an account</a></p>
+      </form>
+    </div></div>`,
+    mount(root) {
+      $('#pw-toggle', root).addEventListener('click', e => { const pw = $('#pw', root), show = pw.type === 'password'; pw.type = show ? 'text' : 'password'; e.currentTarget.setAttribute('aria-pressed', show); e.currentTarget.setAttribute('aria-label', show ? 'Hide password' : 'Show password'); });
+      $('#signin', root).addEventListener('submit', e => { e.preventDefault(); location.hash = '#/'; toast('Signed in (prototype).'); });
+      $('#magic', root).addEventListener('click', () => toast('We’d email you a one-time sign-in link (prototype).'));
+    } };
+}
+
+function StyleGuide() {
+  const tokens = ['background', 'surface', 'muted', 'foreground', 'muted-foreground', 'primary', 'on-primary', 'primary-tint', 'secondary', 'border', 'border-strong', 'success', 'warning', 'destructive'];
+  return { title: 'Style guide', nav: null, html: `
+    <header class="page-head"><p class="eyebrow">Design system</p><h1 tabindex="-1">Style guide</h1>
+      <p class="lead">Tokens and components from <span class="mono">design-system/coffee-nerds/MASTER.md</span>. Toggle the theme to see both palettes.</p></header>
+    <section class="section" aria-labelledby="sg-c"><h2 id="sg-c" style="margin-bottom:var(--space-md)">Color tokens</h2>
+      <div class="swatches">${tokens.map(t => `<div class="swatch"><div class="swatch-color" style="background:var(--color-${t})"></div><div class="swatch-body"><strong>${t}</strong><br><code data-token="--color-${t}"></code></div></div>`).join('')}</div></section>
+    <section class="section" aria-labelledby="sg-t"><h2 id="sg-t" style="margin-bottom:var(--space-md)">Typography</h2>
+      <div class="card stack" style="gap:var(--space-md)">
+        <p class="eyebrow">Display · Calistoga</p><p class="display" style="font-size:2.5rem;line-height:1.1">Fazenda Santa Inês</p>
+        <p class="eyebrow">Body · Inter</p><p class="readable">Sweet and chocolatey with a clean finish. Next time, grind two clicks finer and keep the bloom at 45 seconds.</p>
+        <p class="eyebrow">Data · JetBrains Mono</p><p class="mono" style="font-size:1.25rem">30 g · 500 g · 1:16.7 · 100 °C · 3:30</p>
+      </div></section>
+    <section class="section" aria-labelledby="sg-b"><h2 id="sg-b" style="margin-bottom:var(--space-md)">Buttons, badges, inputs</h2>
+      <div class="card stack" style="gap:var(--space-lg)">
+        <div class="actions" style="margin:0"><button class="btn btn-primary" type="button">${ic('plus')}Primary</button><button class="btn btn-secondary" type="button">Secondary</button><button class="btn btn-ghost" type="button">Ghost</button><button class="btn btn-danger" type="button">${ic('archive')}Destructive</button><button class="btn btn-primary" type="button" disabled>Disabled</button></div>
+        <div class="badges">${freshBadge({ roastDate: '2026-10-24', status: 'active' })}${freshBadge({ roastDate: '2026-10-10', status: 'active' })}${freshBadge({ roastDate: '2026-09-01', status: 'active' })}${freshBadge({ status: 'finished' })}<span class="badge badge--builtin">Built-in</span><span class="badge">Mine</span></div>
+        <div class="filter-bar" style="margin:0"><button class="filter-chip" type="button" aria-pressed="true">V60 <span class="count">2</span></button><button class="filter-chip" type="button" aria-pressed="false">French Press <span class="count">2</span></button></div>
+        <div class="field-row" style="max-width:40rem"><div class="field"><label for="sg-1">Dose</label><div class="input-unit"><input class="input" id="sg-1" value="30"><span class="unit">g</span></div><p class="hint">From the recipe</p></div>
+          <div class="field"><label for="sg-2">Roaster <span class="req">(required)</span></label><input class="input" id="sg-2" aria-invalid="true" aria-describedby="sg-2e"><p class="field-error" id="sg-2e">${ic('alert', 'icon--sm')}Enter the roaster.</p></div></div>
+        <p>${stars(4)} <span class="muted">Rating display</span></p>
+      </div></section>`,
+    mount(root) { const cs = getComputedStyle(document.documentElement); $$('[data-token]', root).forEach(el => { el.textContent = cs.getPropertyValue(el.dataset.token).trim(); }); } };
+}
+
+function NotFound() {
+  return { title: 'Not found', nav: null, html: `<header class="page-head"><h1 tabindex="-1">Page not found</h1></header>${emptyState('search', 'Nothing brewing here', 'That page doesn’t exist in this prototype.', '<a class="btn btn-primary" href="#/">Go home</a>')}` };
+}
+
+/* ===== Router ===== */
+let cleanup = null, guard = null, prevHash = location.hash, ignoreNext = false, firstRender = true;
+function parseHash() {
+  const h = location.hash.slice(1) || '/';
+  const [path, qs] = h.split('?');
+  return { parts: path.split('/').filter(Boolean), q: new URLSearchParams(qs || '') };
+}
+function render() {
+  if (cleanup) { cleanup(); cleanup = null; }
+  const { parts: [a, b, c], q } = parseHash();
+  const view =
+    !a ? Home() :
+    a === 'coffees' && b === 'new' ? CoffeeForm(q) :
+    a === 'coffees' && b ? CoffeeDetail(b) :
+    a === 'coffees' ? Coffees(q) :
+    a === 'recipes' && b && c === 'guide' ? Guide(b) :
+    a === 'recipes' && b ? RecipeDetail(b) :
+    a === 'recipes' ? Recipes(q) :
+    a === 'log' ? LogBrew(q) :
+    a === 'history' ? History(q) :
+    a === 'signin' ? SignIn() :
+    a === 'styleguide' ? StyleGuide() : NotFound();
+  document.body.classList.toggle('focus-mode', !!view.focus);
+  $$('[data-nav]').forEach(el => el.dataset.nav === view.nav ? el.setAttribute('aria-current', 'page') : el.removeAttribute('aria-current'));
+  document.title = `${view.title} · Coffee Nerds`;
+  const root = $('#view');
+  root.innerHTML = view.html;
+  root.classList.remove('enter'); void root.offsetWidth; root.classList.add('enter');
+  if (view.mount) cleanup = view.mount.call({}, root) || null;
+  if (!firstRender) { window.scrollTo(0, 0); $('h1', root)?.focus({ preventScroll: true }); }
+  firstRender = false;
+}
+window.addEventListener('hashchange', () => {
+  if (ignoreNext) { ignoreNext = false; return; }
+  if (guard && !guard()) { ignoreNext = true; location.hash = prevHash; return; }
+  prevHash = location.hash;
+  render();
+});
+
+/* ===== Theme ===== */
+function currentTheme() { return document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+function paintToggles() {
+  const dark = currentTheme() === 'dark';
+  $$('.theme-toggle').forEach(b => {
+    const label = dark ? 'Switch to light theme' : 'Switch to dark theme';
+    b.setAttribute('aria-label', label);
+    b.innerHTML = b.classList.contains('icon-btn') ? ic(dark ? 'sun' : 'moon') : `${ic(dark ? 'sun' : 'moon')}${dark ? 'Light theme' : 'Dark theme'}`;
+  });
+}
+try { const saved = localStorage.getItem('cn-theme'); if (saved) document.documentElement.dataset.theme = saved; } catch (_) { /* storage unavailable */ }
+document.addEventListener('click', e => {
+  if (!e.target.closest('.theme-toggle')) return;
+  const next = currentTheme() === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('cn-theme', next); } catch (_) { /* storage unavailable */ }
+  paintToggles();
+  if (parseHash().parts[0] === 'styleguide') render();
+});
+paintToggles();
+render();
+</script>
+</body>
+</html>

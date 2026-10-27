@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coffee Nerds · a journal for every cup you brew</title>
+  <meta name="description" content="Coffee Nerds is a journal for home brewers. Log the bag, the recipe and how it tasted, then brew your best cup again. V60, French Press and AeroPress.">
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ HERO: mosaic masthead, title on the 42% axis (field: yellow bourbon) ============ -->
+<header class="hero" id="top" data-ink="#0a0a0a">
+  <div class="band">
+    <div class="masthead">
+      <a class="wordmark" href="#top" aria-label="Coffee Nerds, back to top">Coffee Nerds</a>
+      <nav class="tab" aria-label="Main">
+        <a class="link" href="#how">How it works</a>
+        <a class="link" href="#recipes">Recipes</a>
+        <a class="link" href="#brew">Brew guide</a>
+        <a class="link" href="#questions">Questions</a>
+      </nav>
+      <details class="menu">
+        <summary>Menu</summary>
+        <nav aria-label="Main, phone">
+          <a href="#how">How it works</a>
+          <a href="#recipes">Recipes</a>
+          <a href="#brew">Brew guide</a>
+          <a href="#questions">Questions</a>
+          <a href="#start">Start your journal</a>
+        </nav>
+      </details>
+      <a class="button masthead__action" href="#start">Start your journal</a>
+    </div>
+
+    <figure class="cell cell--a" data-open>
+      <img src="assets/coffee-berries.jpg" width="1920" height="1280" fetchpriority="high"
+           alt="Ripe red and yellow coffee cherries on a branch, Mundo Novo, ready for picking">
+    </figure>
+    <div class="cell cell--green" aria-hidden="true"></div>
+    <figure class="cell cell--b" data-open>
+      <img src="assets/manual-drip-pour-over-coffee.jpg" width="1920" height="1278"
+           alt="Water poured from a copper kettle into a pour-over dripper, seen from above">
+    </figure>
+    <div class="cell cell--tall" aria-hidden="true"></div>
+    <figure class="cell cell--c" data-open>
+      <img src="assets/harvesting-coffee-sao-paulo-1923.jpg" width="1785" height="1145"
+           alt="Rows of coffee trees during the harvest in São Paulo, Brazil, photographed around 1923">
+    </figure>
+    <div class="cell cell--dark" aria-hidden="true"></div>
+    <figure class="cell cell--d" data-open>
+      <img src="assets/coffee-pour-over-using-hario-cone.jpg" width="1920" height="3413"
+           alt="A Hario V60 cone full of wet coffee grounds sitting on a mug">
+    </figure>
+    <div class="cell cell--orange" aria-hidden="true"></div>
+    <div class="cell cell--white" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero__body">
+    <div class="hero__stand">
+      <p class="lead" data-load style="--d:420ms">Coffee Nerds is a journal for home brewers. Log the bag, the recipe and how it tasted, then brew your best cup again.</p>
+      <a class="link-plain hero__try" data-load style="--d:480ms" href="#brew">Try a recipe</a>
+    </div>
+    <h1 class="title lines">
+      <span class="line"><span data-line style="--i:0">Every cup</span></span>
+      <span class="line"><span data-line style="--i:1">on record</span></span>
+    </h1>
+    <a class="button hero__phone-action" href="#start">Start your journal</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ INTRO: the three questions (field: filter white) ============ -->
+<section class="chapter intro" aria-labelledby="intro-h" data-ink="#0a0a0a">
+  <div class="grid">
+    <div class="intro__words">
+      <h2 class="display-2" id="intro-h" data-reveal>Repeat the<br> good cups</h2>
+      <p class="lead intro__body" data-reveal style="--i:1">Pick a bag, pick a recipe, write down how it tasted. Your journal remembers the rest, and tells you how to repeat the good cups.</p>
+      <dl class="intro__qs">
+        <div data-reveal style="--i:2"><dt>Which coffee?</dt><dd>The bag: roaster, origin, process and roast date.</dd></div>
+        <div data-reveal style="--i:3"><dt>How did you brew it?</dt><dd>The recipe, and anything you changed.</dd></div>
+        <div data-reveal style="--i:4"><dt>How did it taste?</dt><dd>Stars, four sliders and a note for next time.</dd></div>
+      </dl>
+    </div>
+    <figure class="intro__plate" data-reveal style="--i:2">
+      <img src="assets/coffea-arabica-blanco1-53-cropped.jpg" width="1080" height="1680" loading="lazy" decoding="async"
+           alt="Botanical plate of Coffea arabica: leaves, white flowers and red cherries on one branch">
+      <figcaption class="small">Coffea arabica, from Blanco’s Flora de Filipinas, 1880s.</figcaption>
+    </figure>
+    <figure class="intro__chip" data-reveal style="--i:3">
+      <img src="assets/open-coffee-cherry.jpg" width="1920" height="1440" loading="lazy" decoding="async"
+           alt="A coffee cherry split open on a fingertip, showing the two pale beans inside">
+    </figure>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS: tiles that grow (field: green bean) ============ -->
+<section class="chapter how" id="how" aria-labelledby="how-h" data-ink="#0a0a0a">
+  <div class="how__stage grid">
+    <h2 class="head how__h" id="how-h" data-reveal>Bag it, brew it,<br> rate it</h2>
+
+    <!-- stage 1: the bag -->
+    <div class="how__step how__step--1">
+      <div class="tile tile--yellow" data-reveal>
+        <article class="ui ui--coffee" data-ui aria-label="Example coffee in the journal">
+          <div class="ui__row ui__row--top">
+            <span class="ui__chip ui__chip--peak">Peak window</span>
+            <span class="ui__meta"><span class="nums">16</span> days off roast</span>
+          </div>
+          <h3 class="ui__title">Fazenda Santa Inês, Yellow Bourbon</h3>
+          <p class="ui__meta">Coffee Lab · Brazil, Sul de Minas · <span class="nums">1,150 m</span></p>
+          <dl class="ui__facts">
+            <div><dt>Process</dt><dd>Natural, medium-light</dd></div>
+            <div><dt>Roasted</dt><dd class="nums">10 Oct 2026 · SCA 86</dd></div>
+            <div><dt>Notes</dt><dd>Chocolate, caramel, yellow fruits</dd></div>
+            <div><dt>Logged</dt><dd><span class="nums">9</span> brews, best <span class="nums">5/5</span> on the V60</dd></div>
+          </dl>
+        </article>
+      </div>
+      <h3 class="how__name">Add the bag</h3>
+      <p class="how__text">Roaster, origin, process and roast date, as printed on the bag. Days off roast count themselves.</p>
+    </div>
+
+    <!-- stage 2: the brew -->
+    <div class="how__step how__step--2">
+      <div class="tile tile--white" data-reveal style="--i:1">
+        <article class="ui ui--timer" data-ui aria-label="Brew guide in progress">
+          <div class="ui__row ui__row--top">
+            <span class="ui__meta">Hoffmann Ultimate V60</span>
+            <span class="ui__meta nums">30 g · 500 g · 1:16.7</span>
+          </div>
+          <p class="ui__clock nums">1:24</p>
+          <p class="ui__now">Pour gently, up to <span class="nums">500 g</span></p>
+          <ol class="ui__pours">
+            <li class="is-done"><span class="nums">0:00</span><span>Bloom</span><span class="nums">60 g</span></li>
+            <li class="is-done"><span class="nums">0:45</span><span>Pour in circles</span><span class="nums">300 g</span></li>
+            <li class="is-now"><span class="nums">1:15</span><span>Pour gently</span><span class="nums">500 g</span></li>
+            <li><span class="nums">1:45</span><span>Stir and swirl</span><span>—</span></li>
+            <li><span class="nums">2:00</span><span>Drawdown</span><span>—</span></li>
+            <li><span class="nums">3:30</span><span>Done</span><span>—</span></li>
+          </ol>
+        </article>
+      </div>
+      <h3 class="how__name">Brew from a recipe</h3>
+      <p class="how__text">Pick a method and a recipe. Dose, water and temperature are filled in; change what you changed.</p>
+    </div>
+
+    <!-- stage 3: the rating -->
+    <div class="how__step how__step--3">
+      <div class="tile tile--orange" data-reveal style="--i:2">
+        <article class="ui ui--entry" data-ui aria-label="A logged brew with rating and notes">
+          <div class="ui__row ui__row--top">
+            <span class="ui__meta nums">Mon 26 Oct, 08:15</span>
+            <span class="ui__rating">
+              <span class="ui__meta">Best cup yet</span>
+              <span class="ui__stars" aria-label="Rated 5 out of 5">
+                <svg viewBox="0 0 100 20" aria-hidden="true"><g class="on"><path d="M10 1l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 14.5 4.6 17.5l1.2-6L1.3 7.3l6.1-.7z"/><path transform="translate(20)" d="M10 1l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 14.5 4.6 17.5l1.2-6L1.3 7.3l6.1-.7z"/><path transform="translate(40)" d="M10 1l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 14.5 4.6 17.5l1.2-6L1.3 7.3l6.1-.7z"/><path transform="translate(60)" d="M10 1l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 14.5 4.6 17.5l1.2-6L1.3 7.3l6.1-.7z"/><path transform="translate(80)" d="M10 1l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 14.5 4.6 17.5l1.2-6L1.3 7.3l6.1-.7z"/></g></svg>
+              </span>
+            </span>
+          </div>
+          <h3 class="ui__title">Santa Inês · Hoffmann Ultimate V60</h3>
+          <dl class="ui__facts ui__facts--3">
+            <div><dt>Grinder</dt><dd>Comandante, <span class="nums">24</span> clicks</dd></div>
+            <div><dt>Time</dt><dd class="nums">3:32</dd></div>
+            <div><dt>Dose · water</dt><dd class="nums">30 · 500 g</dd></div>
+          </dl>
+          <ul class="ui__sense" aria-label="Sensory scores out of 5">
+            <li><span>Acidity</span><span class="ui__bar" style="--v:3"></span><span class="nums">3</span></li>
+            <li><span>Sweetness</span><span class="ui__bar" style="--v:5"></span><span class="nums">5</span></li>
+            <li><span>Body</span><span class="ui__bar" style="--v:4"></span><span class="nums">4</span></li>
+            <li><span>Bitterness</span><span class="ui__bar" style="--v:1"></span><span class="nums">1</span></li>
+          </ul>
+          <p class="ui__note"><span class="ui__label">Tasting</span>Sweet and round, long caramel finish. Like a milk-chocolate bar with ripe mango.</p>
+          <p class="ui__note ui__note--prev"><span class="ui__label">Last time with this coffee</span><span class="nums">24 Oct</span>, AeroPress, <span class="nums">3/5</span> at <span class="nums">20</span> clicks: “Grind 2 clicks finer.”</p>
+        </article>
+      </div>
+      <h3 class="how__name">Rate the cup</h3>
+      <p class="how__text">Stars, four sensory sliders and one line for next time. The next brew starts from that line.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RECIPES: one item per poster line (field: dark roast) ============ -->
+<section class="chapter recipes" id="recipes" aria-labelledby="recipes-h" data-ink="#ffffff">
+  <div class="recipes__head">
+    <h2 class="head" id="recipes-h" data-reveal>Six recipes to start</h2>
+    <p class="recipes__sub" data-reveal style="--i:1">Built in, from James Hoffmann, Tetsu Kasuya (2016 World Brewers Cup), Stumptown and Wendelien van Bunnik (2019 World AeroPress Champion). Choose one to open it in the brew guide.</p>
+  </div>
+  <ul class="poster" role="list">
+    <li data-reveal><button type="button" class="poster__item" data-pick="hoffmann-v60"><span class="poster__name">Hoffmann V60</span><span class="poster__fact nums">V60 · 30 g / 500 g · 3:30</span></button></li>
+    <li data-reveal style="--i:1"><button type="button" class="poster__item" data-pick="kasuya-46"><span class="poster__name">Kasuya 4:6</span><span class="poster__fact nums">V60 · 20 g / 300 g · 3:30</span></button></li>
+    <li data-reveal style="--i:2"><button type="button" class="poster__item" data-pick="hoffmann-press"><span class="poster__name">Hoffmann press</span><span class="poster__fact nums">French Press · 30 g / 500 g · 9:00+</span></button></li>
+    <li data-reveal style="--i:3"><button type="button" class="poster__item" data-pick="stumptown"><span class="poster__name">Stumptown</span><span class="poster__fact nums">French Press · 56 g / 850 g · 4:00</span></button></li>
+    <li data-reveal style="--i:4"><button type="button" class="poster__item" data-pick="hoffmann-aero"><span class="poster__name">Hoffmann Aero</span><span class="poster__fact nums">AeroPress · 11 g / 200 g · 3:00</span></button></li>
+    <li data-reveal style="--i:5"><button type="button" class="poster__item" data-pick="van-bunnik"><span class="poster__name">Van Bunnik</span><span class="poster__fact nums">AeroPress, inverted · 30 g / 100 + 120 g · 1:30</span></button></li>
+  </ul>
+</section>
+
+<!-- ============ BREW GUIDE: one control, blown up (field: light roast), the live thing ============ -->
+<section class="chapter brew" id="brew" aria-labelledby="brew-h" data-ink="#0a0a0a">
+  <div class="brew__left">
+    <h2 class="brew__h" id="brew-h" data-reveal>Brew <span data-dose-word>30</span> grams</h2>
+    <p class="brew__sentence" data-reveal style="--i:1">Pick a recipe and drag the dose. Every pour is recalculated, and Start counts you through them.</p>
+
+    <div class="ui ui--guide" data-ui data-reveal style="--i:2">
+      <div class="guide__top">
+        <label class="guide__pick">
+          <span class="sr-only">Recipe</span>
+          <select data-recipe-select>
+            <option value="hoffmann-v60" selected>Hoffmann V60 · V60</option>
+            <option value="kasuya-46">Kasuya 4:6 · V60</option>
+            <option value="hoffmann-press">Hoffmann · French Press</option>
+            <option value="stumptown">Stumptown · French Press</option>
+            <option value="hoffmann-aero">Hoffmann · AeroPress</option>
+            <option value="van-bunnik">Van Bunnik · AeroPress</option>
+          </select>
+        </label>
+        <p class="guide__clock nums" aria-live="off" data-clock>0:00</p>
+        <div class="guide__actions">
+          <button type="button" class="ui-btn ui-btn--primary" data-start>Start</button>
+          <button type="button" class="ui-btn" data-reset>Reset</button>
+        </div>
+      </div>
+      <p class="guide__method" data-method>V60: conical dripper with spiral ribs and a paper filter. Clean, bright cups; sensitive to pour technique.</p>
+      <p class="guide__facts nums" data-facts>Water 500 g · 1:16.7 · about 100 °C · medium-fine grind · about 3:30</p>
+      <table class="guide__table">
+        <caption class="sr-only">Steps for the chosen recipe at the chosen dose</caption>
+        <thead><tr><th scope="col">Time</th><th scope="col">Step</th><th scope="col" class="num">Scale at</th></tr></thead>
+        <tbody data-steps>
+          <tr><td class="nums">0:00</td><td>Bloom: pour 60 g (twice the dose), then swirl so every ground is wet.</td><td class="num nums">60 g</td></tr>
+          <tr><td class="nums">0:45</td><td>Pour in circles: a steady spiral pour until the scale reads 300 g.</td><td class="num nums">300 g</td></tr>
+          <tr><td class="nums">1:15</td><td>Pour gently: a slower, lower pour up to 500 g.</td><td class="num nums">500 g</td></tr>
+          <tr><td class="nums">1:45</td><td>Stir and swirl: stir once gently with a spoon, then a gentle swirl to flatten the bed.</td><td class="num nums">—</td></tr>
+          <tr><td class="nums">2:00</td><td>Drawdown: hands off. Let it drain; aim to finish around 3:30.</td><td class="num nums">—</td></tr>
+          <tr><td class="nums">3:30</td><td>Done: pull the dripper. Taste it, then rate it while it’s fresh.</td><td class="num nums">—</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-only" aria-live="polite" data-announce></p>
+    </div>
+    <p class="brew__tip" data-reveal style="--i:3">Dialing in: a drawdown much past 3:30 means grind coarser; sour or hollow and fast means grind finer. Change one thing per brew and note it in “next time”.</p>
+  </div>
+
+  <div class="dose" data-ui data-reveal style="--i:1">
+    <label class="dose__label" for="dose">Dose</label>
+    <output class="dose__value nums" for="dose" data-dose-out>30 g</output>
+    <input class="dose__range" id="dose" type="range" min="15" max="60" step="1" value="30" data-dose
+           aria-describedby="dose-water">
+    <p class="dose__water nums" id="dose-water" data-dose-water>Water 500 g · ratio 1:16.7</p>
+  </div>
+</section>
+
+<!-- ============ DETAILS: mosaic of unlike tiles (field: filter white) ============ -->
+<section class="chapter details" id="details" aria-labelledby="details-h" data-ink="#0a0a0a">
+  <div class="mosaic">
+    <figure class="m m--video" data-reveal>
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/pour-over-poster.jpg" width="854" height="480" aria-hidden="true" data-loop>
+        <source src="assets/pour-over.webm" type="video/webm">
+      </video>
+      <figcaption class="m__cap small">Pour-over at home, from a short film by Lev Lazinskiy.</figcaption>
+    </figure>
+    <div class="m m--head m--tone" data-reveal style="--i:1">
+      <h2 id="details-h">Every variable, kept</h2>
+    </div>
+    <div class="m m--s1 m--green" data-reveal style="--i:2">
+      <p class="m__sentence">Your grinder, to&nbsp;the click.</p>
+      <p class="m__small">Comandante, 24 clicks for the best Santa Inês so far.</p>
+    </div>
+    <figure class="m m--beans" data-reveal style="--i:3">
+      <img src="assets/roasted-coffee-beans.jpg" width="1600" height="1200" loading="lazy" decoding="async"
+           alt="Close view of roasted coffee beans">
+    </figure>
+
+    <div class="m m--s2 m--yellow" data-reveal>
+      <p class="m__sentence">The best brew of each bag comes first.</p>
+      <table class="m__best" data-ui>
+        <caption class="sr-only">Best brew per coffee</caption>
+        <tbody>
+          <tr><th scope="row">Fazenda Santa Inês</th><td>Hoffmann V60</td><td class="num nums">5/5 · 24 clicks · 3:32</td></tr>
+          <tr><th scope="row">Guji Hambela</th><td>Kasuya 4:6</td><td class="num nums">4/5 · 28 clicks · 3:28</td></tr>
+          <tr><th scope="row">Huila Pink Bourbon</th><td>Stumptown</td><td class="num nums">2/5 · 1 brew so far</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="m m--fig1 m--tone" data-reveal style="--i:1">
+      <p class="m__figure nums">16</p>
+      <p class="m__small">days off roast: the Santa Inês is in its peak window. The Huila, roasted 4&nbsp;days ago, is still resting.</p>
+    </div>
+    <div class="m m--list m--orange" data-reveal style="--i:2">
+      <p class="m__small m__small--ink">How it tasted, 26 Oct</p>
+      <ul class="m__lines" role="list">
+        <li><span>Acidity</span><span class="nums">3</span></li>
+        <li><span>Sweetness</span><span class="nums">5</span></li>
+        <li><span>Body</span><span class="nums">4</span></li>
+        <li><span>Bitterness</span><span class="nums">1</span></li>
+      </ul>
+    </div>
+
+    <figure class="m m--drying" data-reveal>
+      <img src="assets/coffee-cherries-green-coffee-tarrazu-costa-rica.jpg" width="1600" height="1200" loading="lazy" decoding="async"
+           alt="Red coffee cherries and pale green beans drying in the sun on a patio">
+      <figcaption class="m__cap small">Cherries and green coffee drying, Tarrazú, Costa Rica.</figcaption>
+    </figure>
+    <div class="m m--fig2 m--green" data-reveal style="--i:1">
+      <p class="m__figure nums">3.8</p>
+      <p class="m__small">stars on average across 23 brews this October. Most used: the V60.</p>
+    </div>
+    <div class="m m--s3 m--tone" data-reveal style="--i:2">
+      <p class="m__sentence">Duplicate a built-in recipe and it’s yours.</p>
+      <p class="m__small">Santa Inês house V60 is Hoffmann’s method at 98&nbsp;°C, Comandante 24 clicks. Brewed 3 times.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUESTIONS: a band per question ============ -->
+<section class="chapter faq" id="questions" aria-labelledby="faq-h" data-ink="#0a0a0a">
+  <div class="faq__head">
+    <h2 id="faq-h" data-reveal>Questions</h2>
+  </div>
+  <div class="faq__band">
+    <h3 data-reveal>Does it do espresso?</h3>
+    <p data-reveal style="--i:1">Not yet. Coffee Nerds starts with the V60, the French Press and the AeroPress. Chemex, Kalita Wave, Clever Dripper and moka pot are next; pressure profiles and machine settings are not planned for the first version.</p>
+  </div>
+  <div class="faq__band">
+    <h3 data-reveal>Who can see my brews?</h3>
+    <p data-reveal style="--i:1">Only you. Each journal is private. There are no followers, no feed and no comments, so a bad cup stays between you and your grinder.</p>
+  </div>
+  <div class="faq__band">
+    <h3 data-reveal>Can I change a built-in recipe?</h3>
+    <p data-reveal style="--i:1">The six built-in recipes stay as their authors published them. Duplicate one and the copy is yours to edit: change the dose, add a pour, rename it.</p>
+  </div>
+  <div class="faq__band">
+    <h3 data-reveal>Do I have to fill in every field?</h3>
+    <p data-reveal style="--i:1">No. Only the coffee, the recipe and the rating are required. Everything else is optional, so a rushed Monday cup still gets logged.</p>
+  </div>
+  <div class="faq__band">
+    <h3 data-reveal>Is there a phone app?</h3>
+    <p data-reveal style="--i:1">No app to install. The website is built to work on a phone propped up next to the kettle, timer included.</p>
+  </div>
+  <div class="faq__band">
+    <h3 data-reveal>Does it connect to my scale?</h3>
+    <p data-reveal style="--i:1">No. Smart scales and grinders are not connected; you type the numbers in. The guide gives you the scale reading to aim for at every step.</p>
+  </div>
+  <div class="faq__band">
+    <h3 data-reveal>Do you sell coffee?</h3>
+    <p data-reveal style="--i:1">No, and there are no shop links. Log the bag you bought, wherever you bought it.</p>
+  </div>
+</section>
+
+<!-- ============ START: a sentence with a blank (field: yellow bourbon) ============ -->
+<section class="chapter cta" id="start" aria-labelledby="cta-h" data-ink="#0a0a0a">
+  <form class="cta__form" action="#start" data-signup>
+    <h2 class="cta__line" id="cta-h">
+      <label for="email">Open a journal for</label>
+      <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@mail.com" aria-describedby="cta-note">
+      <button type="submit" class="cta__go" aria-label="Open my journal">now</button>
+    </h2>
+    <p class="cta__note" id="cta-note" data-cta-note>Your journal is private: only you see the coffees and brews you log.</p>
+  </form>
+</section>
+
+</main>
+
+<!-- ============ FOOTER: a footer of tiles (field: dark roast) ============ -->
+<footer class="footer" data-ink="#ffffff">
+  <div class="f f--statement">
+    <p class="f__big">A brewing journal for the V60, the French Press and the AeroPress.</p>
+    <p class="f__legal small">© 2026 Coffee Nerds</p>
+  </div>
+  <nav class="f f--nav" aria-label="Footer">
+    <ul role="list">
+      <li><a class="link" href="#how">How it works</a></li>
+      <li><a class="link" href="#recipes">Recipes</a></li>
+      <li><a class="link" href="#brew">Brew guide</a></li>
+      <li><a class="link" href="#details">Details</a></li>
+      <li><a class="link" href="#questions">Questions</a></li>
+    </ul>
+  </nav>
+  <div class="f f--methods">
+    <p>Brewing now: V60, French Press, AeroPress.</p>
+    <p>Next: Chemex, Kalita Wave, Clever, moka pot.</p>
+  </div>
+  <div class="f f--sources">
+    <p class="f__label">Recipes from</p>
+    <ul role="list">
+      <li><a class="link" href="https://honestcoffeeguide.com/brew-recipes/james-hoffmann-v60/">James Hoffmann</a></li>
+      <li><a class="link" href="https://hario.co.uk/blogs/hario-ambassadors/hario-v60-recipe-interview-with-hario-ambassador-tetsu-kasuya">Tetsu Kasuya</a></li>
+      <li><a class="link" href="https://www.stumptowncoffee.com/brew-guides/french-press">Stumptown</a></li>
+      <li><a class="link" href="https://aeroprecipe.com/recipes/2019-wac-1st-place">Wendelien van Bunnik</a></li>
+    </ul>
+  </div>
+  <a class="f f--mark" href="#top" aria-label="Coffee Nerds, back to top"><span>Coffee Nerds</span></a>
+  <a class="f f--go" href="#start">
+    <span>Start your journal</span>
+    <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38 38 10M16 10h22v22" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+  </a>
+  <div class="f f--credits small">
+    <ul role="list" aria-label="Picture credits">
+      <li><a class="link" href="https://commons.wikimedia.org/wiki/File:Coffee_Berries.jpg">“Coffee Berries”</a> by Jonathan Wilkins, CC BY-SA 3.0</li>
+      <li><a class="link" href="https://commons.wikimedia.org/wiki/File:Manual_drip_(pour-over)_coffee.jpg">“Manual drip (pour-over) coffee”</a> by Kim Sanso, CC0</li>
+      <li><a class="link" href="https://commons.wikimedia.org/wiki/File:Harvesting_coffee,_Sao_Paulo,_Brazil,_photo_from_The_Encyclopedia_of_Food_by_Artemas_Ward.jpg">“Harvesting coffee, São Paulo, Brazil”</a>, Artemas Ward, 1923, public domain</li>
+      <li><a class="link" href="https://commons.wikimedia.org/wiki/File:Coffee_pour_over_using_Hario_cone.jpg">“Coffee pour over using Hario cone”</a> by GorillaWarfare, CC BY-SA 1.0</li>
+      <li><a class="link" href="https://commons.wikimedia.org/wiki/File:Coffea_arabica_Blanco1.53-cropped.jpg">Coffea arabica plate</a> by Francisco Manuel Blanco, public domain</li>
+      <li><a class="link" href="https://commons.wikimedia.org/w/index.php?curid=84501930">“Open coffee cherry”</a> by Roger Burger, CC0</li>
+      <li><a class="link" href="https://commons.wikimedia.org/wiki/File:Roasted_coffee_beans.jpg">“Roasted coffee beans”</a> by MarkSweep, public domain</li>
+      <li><a class="link" href="https://commons.wikimedia.org/wiki/File:Coffee-cherries-green-coffee-tarrazu-costa-rica.jpg">“Coffee cherries, green coffee, Tarrazú”</a>, public domain</li>
+      <li><a class="link" href="https://commons.wikimedia.org/wiki/File:Pour_Over.ogv">“Pour Over”</a>, a film by Lev Lazinskiy, CC BY-SA 4.0</li>
+      <li>All via Wikimedia Commons.</li>
+    </ul>
+  </div>
+</footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>

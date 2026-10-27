@@ -3,7 +3,7 @@
 > Status: draft v0.1 · 2026-10-26
 > Based on [`PROJECT.md`](../PROJECT.md). Like that document, this one is technology-agnostic: it describes what the site looks like and how it behaves, not how it is built.
 >
-> **Clickable prototype:** [`design/prototype/index.html`](prototype/index.html). Open it in any browser; it needs no build step or server. All flows work with demo data, which is saved only in your browser.
+> **Clickable prototype:** [`design/prototype/index.html`](prototype/index.html). Open it in any browser; it needs no build step or server. All flows work with the demo data from [`design/sample-data.md`](sample-data.md), which is saved only in your browser.
 
 ---
 
@@ -58,10 +58,14 @@ Purpose: answer “what should I brew now?” and give a quick sense of progress
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│ GOOD MORNING                                             │
-│ What's in the cup today?         ┌──────┬──────┬──────┐  │
-│ Pick a bag, pick a recipe…       │ 6    │ 3    │ 4.0  │  │
-│ [+ Log a brew] [Browse recipes]  │ week │ bags │ avg ★│  │
+│ GOOD MORNING                     ┌──────────┬──────────┐  │
+│ What's in the cup today?         │ 9 brews  │ 3 bags   │  │
+│ Pick a bag, pick a recipe…       │ this mo. │ on shelf │  │
+│ [+ Log a brew] [Browse recipes]  ├──────────┼──────────┤  │
+│                                  │ 3.4 / 5  │ V60      │  │
+│                                  │ avg      │ most used│  │
+│                                  └──────────┴──────────┘  │
+│ 💤 Huila Pink Bourbon was roasted 4 days ago…  (resting tip)│
 │                                  └──────┴──────┴──────┘  │
 ├──────────────────────────────────────────────────────────┤
 │ Active bags                                 All coffees →│
@@ -88,12 +92,13 @@ Purpose: answer “what should I brew now?” and give a quick sense of progress
 
 | Days off roast | Label | Colour |
 |---|---|---|
-| 0–3 | Resting | blue |
-| 4–30 | Sweet spot | green |
-| 31–60 | Past peak | amber |
-| > 60 | Stale | red |
+| 0–6 | Resting | `#E6EEF5` / `#1F5277` (blue) |
+| 7–30 | Peak window | `#F7E3DE` / `#A3311F` (cherry) |
+| 31+ | Fading | `#EFECE6` / `#5F5B53` (grey) |
 
-The thresholds are a starting point for filter coffee and could become a user setting.
+The rule comes from `sample-data.md` §2.3. On Home, each active bag also gets a **freshness bar** filled to `days / 35`, capped at 100%. While a bag is *Resting*, a blue tip appears on Home, the coffee page and the brew form: “*Huila Pink Bourbon* was roasted 4 days ago. Give it a few more days before you judge it.”
+
+The coffee page also lists the **best brew per method** (e.g. V60 5★ · AeroPress 3★ · French Press not brewed yet).
 
 ### 4.3 Methods & Recipes (Feature 2)
 
@@ -112,9 +117,10 @@ The thresholds are a starting point for filter coffee and could become a user se
 1. **Coffee:** cards for active bags only, with freshness badges, plus “+ Add a new coffee”.
 2. **Recipe:** grouped by method. If you've brewed this coffee before, a **“Your best with this coffee”** callout appears at the top with one tap to use that recipe.
 3. **Brew & rate:**
-   * **“Last time you said…”** callout, showing the previous *next time* note for this coffee + recipe (principle 4).
+   * The note at the top: “Only the coffee, recipe and rating are required. Everything else is optional.”
+   * **“Last time with this coffee”** callout, showing the most recent *next time* note for this coffee (principle 4). Resting and dialing-in tips appear below it when they apply.
    * **What you actually did:** date/time (now), dose, water, temp (pre-filled from the recipe, with “Recipe: 30 g” hints underneath), live ratio, grinder + setting (carried over from the last brew), actual time.
-   * **How did it taste?:** a **1–5 star rating** (the only required field), four **sensory sliders** (acidity, sweetness, body, bitterness, 1–5), tasting notes, and *what to change next time*.
+   * **How did it taste?:** a **1–5 star rating** (the only required field) with a word for each value: *Tap a star* → Undrinkable · Meh · Decent · Great · Best cup yet. Four **sensory sliders** (1–5) labelled at both ends: Acidity *Flat → Bright*, Sweetness *None → Very sweet*, Body *Tea-like → Heavy*, Bitterness *None → Harsh*. They default to 3 · 4 · 3 · 2. Then tasting notes and *what to change next time*.
    * Save and Back sit in a **sticky action bar** above the tab bar, so they're reachable without scrolling.
 
 Completed steps in the stepper are links, so you can change the coffee or recipe without starting over. Opening the wizard with `?coffee=` and/or `?recipe=` skips the steps that are already chosen.
@@ -143,21 +149,25 @@ A minimal sign-in card that says plainly: *“Your coffee journal is private. On
 
 ### 5.1 Colour
 
-The palette is warm and taken from coffee itself: a cream page, espresso-brown text and a terracotta “roast” accent. Status colours are kept for meaning (freshness, “best brew”).
+The tokens come from `sample-data.md` §8: a near-white page, warm ink, and a coffee-cherry accent. Blue is for information (resting tips), and green is kept for “best brew” callouts.
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `--bg` | `#f6efe4` cream | `#18110c` | Page |
-| `--surface` | `#fffaf2` | `#221812` | Cards, inputs |
-| `--surface-2` | `#efe4d2` | `#2e2219` | Chips, tiles, hover |
-| `--text` | `#2a1c13` espresso | `#f2e6d8` | Body text |
-| `--muted` | `#75604f` | `#b39c88` | Secondary text |
-| `--accent` | `#a3471f` terracotta | `#e27c4a` | Primary buttons, links, timer marks |
-| `--good` | `#33663a` | `#8cc08a` | Sweet spot, “best brew” callouts |
-| `--warn` / `--bad` / `--rest` | amber / brick / blue | lighter variants | Freshness states |
-| `--star` | `#cf9214` | `#f0b43a` | Ratings |
+| `--bg` | `#F7F6F3` | `#141311` | Page |
+| `--surface` | `#FFFFFF` | `#24221F` | Cards, inputs |
+| `--surface-2` | `#EFECE6` | `#302d29` | Chips, tiles, row dividers |
+| `--border` / `--input` | `#E2DFD8` / `#CFCAC0` | `#3a3632` / `#4a4640` | Lines, input borders |
+| `--text` | `#1B1A17` ink | `#f2efe9` | Body text |
+| `--muted` / `--label` | `#5F5B53` / `#6B665E` | `#A9A399` | Secondary text, small labels |
+| `--accent` | `#A3311F` cherry (hover `#7E2416`) | `#F08A74` | Primary buttons, links, timer marks, Peak window |
+| `--accent-soft` / `--accent-tint` | `#F7E3DE` / `#FBF4F2` | `#3d221c` / `#2b1d19` | Tints, Peak window pill |
+| `--rest` / `--rest-soft` | `#1F5277` / `#E6EEF5` | `#9cc0e0` / `#1c2a36` | Resting pill, info tips |
+| `--good` / `--good-soft` | `#2F6B3A` / `#E3EFE3` | `#8cc08a` / `#1f2e20` | “Best brew” callouts |
+| `--star` | `#c98a0c` | `#f0b43a` | Ratings |
 
-**Dark mode** follows the system setting, and a toggle in the header can override it. A dark theme also suits dim early-morning kitchens.
+Every text/background pair above was measured at ≥ 4.5:1 (WCAG AA).
+
+**Dark mode** follows the system setting, and a toggle in the header can override it. The **brew guide is always dark**, using the sample data's brew-guide palette. That's easier on the eyes in an early-morning kitchen, and the timer stands out.
 
 Roast level drives the colour of the **bag illustration** (Light `#c99a68` → Dark `#432817`), so bags can be told apart at a glance.
 
@@ -165,9 +175,9 @@ Roast level drives the colour of the **bag illustration** (Light `#c99a68` → D
 
 | Role | Font | Notes |
 |---|---|---|
-| Display (h1–h3, big numbers) | Old-style serif (Iowan / Palatino / Georgia) | Specialty-coffee, “journal” feel |
-| Body & UI | System sans-serif | Fast, native and readable |
-| Timer, time marks | Monospace | Digits don't shift while counting |
+| Display (h1–h3, big numbers) | **Space Grotesk** | Modern, a little technical: the “nerd” side |
+| Body & UI | **Inter** | Clear at small sizes |
+| Timer, time marks | **JetBrains Mono** | Digits don't shift while counting |
 | All numbers | `tabular-nums` | Doses and ratios line up in columns |
 
 Scale: h1 `clamp(1.9rem, 4.5vw, 2.7rem)` · h2 1.35rem · h3 1.1rem · body 16px · small 0.875rem.
@@ -195,7 +205,7 @@ Scale: h1 `clamp(1.9rem, 4.5vw, 2.7rem)` · h2 1.35rem · h3 1.1rem · body 16px
 | Star input | Brew form | 5 large stars, keyboard-accessible radios |
 | Sensory slider | Brew form | 1–5 range with the value shown |
 | Sensory bars | History | Read-only version of the sliders |
-| Callout (green) | Coffee detail, wizard, history | “Best way to brew…”, “Last time you said…” |
+| Callout (green / blue) | Home, coffee detail, wizard, history | Green: “Best way to brew…”, “Last time with this coffee”. Blue: resting and dialing-in tips |
 | Brew row | Lists | Method icon, coffee, recipe · relative date, stars. Expands in History |
 | Empty state | All lists | Dashed box + one clear next action |
 | Toast | After saves | “Brew saved to your journal” |
@@ -210,14 +220,20 @@ Scale: h1 `clamp(1.9rem, 4.5vw, 2.7rem)` · h2 1.35rem · h3 1.1rem · body 16px
 ## 8. Accessibility
 
 * Every text/background token pair in both themes was measured at ≥ 4.5:1 (WCAG AA). Freshness and ratings never rely on colour alone (text and star count are always present).
-* All controls are native elements (links, buttons, radios, ranges, selects), so they work with a keyboard and screen readers. The focus ring is a 3 px terracotta outline.
+* All controls are native elements (links, buttons, radios, ranges, selects), so they work with a keyboard and screen readers. The focus ring is a 3 px cherry outline.
 * Star ratings are radio groups with hidden text labels (“4 stars”). The timer's step changes are announced politely.
 * Tap targets are at least 44 px, and 52 px for the timer controls.
 * `prefers-reduced-motion` turns off transitions.
 
 ## 9. Voice and copy
 
-Short, friendly, a little nerdy, and never preachy. Examples: “What's in the cup today?”, “Last time you said…”, “Brew it again”, and the 404 page's “Spilled.” Units are always shown (`g`, `°C`, `m:ss`). When the site is built, keep all UI text in one string catalog so pt-BR can be added later (open question 6). The prototype writes its text inline.
+Short, friendly, a little nerdy, and never preachy. The recurring copy comes from `sample-data.md` §7:
+
+* Home hero: “What's in the cup today?” / “Pick a bag, pick a recipe, write down how it tasted. Your journal remembers the rest — and tells you how to repeat the good cups.”
+* Dialing-in tip (V60 recipes based on Hoffmann): “Drawdown much past 3:30 → grind coarser. Sour or hollow and fast → grind finer. Change one thing per brew and note it in 'next time'.”
+* Other examples: “Brew it again”, and the 404 page's “Spilled.”
+
+ Units are always shown (`g`, `°C`, `m:ss`). When the site is built, keep all UI text in one string catalog so pt-BR can be added later (open question 6). The prototype writes its text inline.
 
 ## 10. How the open questions are handled (PROJECT.md §10)
 

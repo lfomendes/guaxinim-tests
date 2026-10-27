@@ -5,38 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Coffee Nerds</title>
 <meta name="description" content="Clickable design prototype for Coffee Nerds, a personal coffee brewing journal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;600;700&display=swap">
 <style>
 /* ---------- Design tokens ---------- */
 :root{
-  --bg:#f6efe4; --surface:#fffaf2; --surface-2:#efe4d2; --text:#2a1c13; --muted:#75604f; --border:#e0d0bb;
-  --accent:#a3471f; --accent-hover:#8a3b19; --accent-ink:#fff; --accent-soft:#f5dccb;
-  --good:#33663a; --good-soft:#dcebd8; --warn:#7a5308; --warn-soft:#f5e5bd;
-  --rest:#41608f; --rest-soft:#dbe4f2; --bad:#963826; --bad-soft:#f3d5cd;
-  --star:#cf9214;
-  --shadow:0 1px 2px rgb(60 35 15 / .06), 0 6px 18px rgb(60 35 15 / .07);
+  /* Tokens from design/sample-data.md §8 */
+  --bg:#F7F6F3; --surface:#FFFFFF; --surface-2:#EFECE6; --text:#1B1A17; --muted:#5F5B53; --label:#6B665E; --border:#E2DFD8; --input:#CFCAC0;
+  --accent:#A3311F; --accent-hover:#7E2416; --accent-ink:#fff; --accent-soft:#F7E3DE; --accent-tint:#FBF4F2;
+  --good:#2F6B3A; --good-soft:#E3EFE3; --rest:#1F5277; --rest-soft:#E6EEF5; --fade:#5F5B53; --fade-soft:#EFECE6;
+  --star:#c98a0c;
+  --shadow:0 1px 2px rgb(27 26 23 / .05), 0 6px 18px rgb(27 26 23 / .06);
   --radius:16px; --radius-sm:10px;
-  --font-display:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
-  --font-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --font-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --font-display:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-body:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#18110c; --surface:#221812; --surface-2:#2e2219; --text:#f2e6d8; --muted:#b39c88; --border:#3d2e23;
-    --accent:#e27c4a; --accent-hover:#ee9061; --accent-ink:#1b0f08; --accent-soft:#40261a;
-    --good:#8cc08a; --good-soft:#22341f; --warn:#e5b851; --warn-soft:#3b2e12;
-    --rest:#93b2e3; --rest-soft:#1f2a3d; --bad:#ec8f7b; --bad-soft:#3d1f18;
+    --bg:#141311; --surface:#24221F; --surface-2:#302d29; --text:#f2efe9; --muted:#A9A399; --label:#A9A399; --border:#3a3632; --input:#4a4640;
+    --accent:#F08A74; --accent-hover:#f5a493; --accent-ink:#141311; --accent-soft:#3d221c; --accent-tint:#2b1d19;
+    --good:#8cc08a; --good-soft:#1f2e20; --rest:#9cc0e0; --rest-soft:#1c2a36; --fade:#c9c3b9; --fade-soft:#302d29;
     --star:#f0b43a; --shadow:0 1px 2px rgb(0 0 0 / .3), 0 6px 18px rgb(0 0 0 / .25);
     color-scheme:dark;
   }
 }
-:root[data-theme="dark"]{
-  --bg:#18110c; --surface:#221812; --surface-2:#2e2219; --text:#f2e6d8; --muted:#b39c88; --border:#3d2e23;
-  --accent:#e27c4a; --accent-hover:#ee9061; --accent-ink:#1b0f08; --accent-soft:#40261a;
-  --good:#8cc08a; --good-soft:#22341f; --warn:#e5b851; --warn-soft:#3b2e12;
-  --rest:#93b2e3; --rest-soft:#1f2a3d; --bad:#ec8f7b; --bad-soft:#3d1f18;
-  --star:#f0b43a; --shadow:0 1px 2px rgb(0 0 0 / .3), 0 6px 18px rgb(0 0 0 / .25);
-  color-scheme:dark;
+:root[data-theme="dark"],.dark-scope{
+  --bg:#141311; --surface:#24221F; --surface-2:#302d29; --text:#f2efe9; --muted:#A9A399; --label:#A9A399; --border:#3a3632; --input:#4a4640;
+    --accent:#F08A74; --accent-hover:#f5a493; --accent-ink:#141311; --accent-soft:#3d221c; --accent-tint:#2b1d19;
+    --good:#8cc08a; --good-soft:#1f2e20; --rest:#9cc0e0; --rest-soft:#1c2a36; --fade:#c9c3b9; --fade-soft:#302d29;
+    --star:#f0b43a; --shadow:0 1px 2px rgb(0 0 0 / .3), 0 6px 18px rgb(0 0 0 / .25);
+    color-scheme:dark;
 }
 
 /* ---------- Base ---------- */
@@ -44,7 +45,7 @@
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 var(--font-body);padding-bottom:84px}
 @media (min-width:760px){body{padding-bottom:0}}
-h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.15;margin:0 0 .4em;letter-spacing:-.01em}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.15;margin:0 0 .4em;letter-spacing:-.02em}
 h1{font-size:clamp(1.9rem,4.5vw,2.7rem)}
 h2{font-size:1.35rem}
 h3{font-size:1.1rem}
@@ -107,9 +108,11 @@ section{margin-bottom:36px}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:.78rem;font-weight:700}
 .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
 .badge.rest{background:var(--rest-soft);color:var(--rest)}
-.badge.good{background:var(--good-soft);color:var(--good)}
-.badge.warn{background:var(--warn-soft);color:var(--warn)}
-.badge.bad{background:var(--bad-soft);color:var(--bad)}
+.badge.peak{background:var(--accent-soft);color:var(--accent)}
+.badge.fade{background:var(--fade-soft);color:var(--fade)}
+.fresh-bar{display:block;height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin-top:12px}
+.fresh-bar i{display:block;height:100%;border-radius:99px}
+.fresh-bar.rest i{background:var(--rest)}.fresh-bar.peak i{background:var(--accent)}.fresh-bar.fade i{background:var(--fade)}
 .badge.plain{background:var(--surface-2);color:var(--muted)}
 .tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
 .stars{color:var(--star);letter-spacing:1px;white-space:nowrap}
@@ -148,10 +151,11 @@ section{margin-bottom:36px}
 /* ---------- Hero ---------- */
 .hero{display:grid;gap:24px;background:linear-gradient(135deg,var(--accent-soft),var(--surface) 70%);border:1px solid var(--border);border-radius:24px;padding:28px 22px;margin-bottom:36px}
 @media (min-width:900px){.hero{grid-template-columns:1.4fr 1fr;align-items:center;padding:40px}}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:0}
 .stats div{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px}
 .stats dt{font-size:.75rem;color:var(--muted);font-weight:600}
 .stats dd{margin:0;font:600 1.7rem/1.1 var(--font-display);font-variant-numeric:tabular-nums}
+.stats dd small{font-size:.9rem;color:var(--muted);font-weight:500}
 
 /* ---------- Lists ---------- */
 .list{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
@@ -201,7 +205,7 @@ legend{font-family:var(--font-display);font-weight:600;font-size:1.1rem;padding:
 .req{color:var(--accent)}
 .hint{font-size:.78rem;color:var(--muted)}
 input[type=text],input[type=number],input[type=date],input[type=datetime-local],input[type=email],input[type=password],input[type=url],input[type=search],select,textarea{
-  font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;min-height:44px;width:100%}
+  font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--input);border-radius:var(--radius-sm);padding:10px 12px;min-height:44px;width:100%}
 textarea{min-height:88px;resize:vertical}
 input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
 .input-unit{position:relative}
@@ -220,7 +224,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .slider{display:grid;grid-template-columns:96px 1fr 28px;align-items:center;gap:10px}
 .slider input{accent-color:var(--accent);width:100%}
 .slider output{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
-.slider-scale{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-left:106px;margin-right:38px}
+.slider .ends{grid-column:2;display:flex;justify-content:space-between;font-size:.72rem;color:var(--label);margin-top:-6px}
 
 .step-editor{display:grid;gap:8px}
 .step-row{display:grid;grid-template-columns:80px 1fr 96px 40px;gap:8px;align-items:center}
@@ -243,6 +247,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .summary-bar a{color:var(--accent);font-weight:600}
 .callout{background:var(--good-soft);border:1px solid color-mix(in srgb,var(--good) 30%,transparent);border-radius:var(--radius);padding:16px 18px;margin-bottom:18px}
 .callout h3{margin-bottom:4px}
+.callout.info{background:var(--rest-soft);border-color:color-mix(in srgb,var(--rest) 25%,transparent);color:var(--rest)}
 
 /* ---------- Recipe steps ---------- */
 .timeline{list-style:none;margin:0;padding:0}
@@ -259,7 +264,11 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .guide-panel{text-align:center;padding:28px 20px}
 .clock{font:600 clamp(4.2rem,16vw,6.6rem)/1 var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:-.03em;margin:8px 0}
 .progress{height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:16px 0}
+.progress{position:relative}
 .progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s linear}
+.progress b{position:absolute;top:0;bottom:0;width:2px;background:var(--surface);margin-left:-1px}
+.dark-scope{background:var(--bg);color:var(--text);border-radius:24px;padding:16px}
+@media (min-width:760px){.dark-scope{padding:24px}}
 .now-card{background:var(--surface-2);border-radius:var(--radius);padding:18px;margin:18px 0;text-align:left}
 .now-card .target{font:700 2.2rem/1 var(--font-display);font-variant-numeric:tabular-nums;color:var(--accent)}
 .now-card .next:empty{display:none}
@@ -353,11 +362,21 @@ function daysOffRoast(c) {
   const today = new Date(); today.setHours(0, 0, 0, 0);
   return Math.round((today - parseLocalDate(c.roastDate)) / DAY);
 }
+function freshState(d) { return d <= 6 ? ["rest", "Resting"] : d <= 30 ? ["peak", "Peak window"] : ["fade", "Fading"]; }
 function freshness(c) {
   const d = daysOffRoast(c);
   if (d == null) return `<span class="badge plain">No roast date</span>`;
-  const [cls, label] = d < 4 ? ["rest", "Resting"] : d <= 30 ? ["good", "Sweet spot"] : d <= 60 ? ["warn", "Past peak"] : ["bad", "Stale"];
-  return `<span class="badge ${cls}" title="${label}">${d} day${d === 1 ? "" : "s"} off roast</span>`;
+  const [cls, label] = freshState(d);
+  return `<span class="badge ${cls}">${d} day${d === 1 ? "" : "s"} off roast · ${label}</span>`;
+}
+function freshBar(c) {
+  const d = daysOffRoast(c);
+  if (d == null) return "";
+  return `<span class="fresh-bar ${freshState(d)[0]}" aria-hidden="true"><i style="width:${Math.min(100, d / 35 * 100)}%"></i></span>`;
+}
+function restingTip(c) {
+  const d = daysOffRoast(c);
+  return c.status === "active" && d != null && d <= 6 ? `<div class="callout info"><p style="margin:0">💤 <b>${esc(c.name)}</b> was roasted ${d} day${d === 1 ? "" : "s"} ago. Give it a few more days before you judge it.</p></div>` : "";
 }
 function stars(n) {
   return `<span class="stars" aria-label="${n} out of 5 stars">${"★".repeat(n)}<span class="off">${"★".repeat(5 - n)}</span></span>`;
@@ -388,23 +407,28 @@ const GRIND = ["Extra-fine", "Fine", "Medium-fine", "Medium", "Medium-coarse", "
 const PROCESSES = ["Washed", "Natural", "Honey", "Pulped natural", "Anaerobic", "Other"];
 const ROASTS = ["Light", "Medium-light", "Medium", "Medium-dark", "Dark"];
 
+/* Content below comes from design/sample-data.md. Methods and built-in recipes are real (PROJECT.md §6.2, §8); everything else is invented demo data. */
 const METHODS = [
-  { id: "v60", name: "V60", type: "Pour-over", filter: "Paper", description: "Conical dripper with spiral ribs and one large hole. A quick flow gives clean, bright cups. You control the pour." },
-  { id: "fp", name: "French Press", type: "Immersion", filter: "Metal", description: "The coffee steeps fully in the water and a metal mesh separates it. Rich body with a heavy mouthfeel. Very forgiving." },
-  { id: "aero", name: "AeroPress", type: "Hybrid (pressure)", filter: "Paper", description: "An immersion brewer finished with gentle hand pressure. Versatile, quick and good for travel." },
+  { id: "v60", name: "V60", type: "Pour-over", filter: "Paper", description: "Conical dripper with spiral ribs and a paper filter. Clean, bright cups. Sensitive to pour technique." },
+  { id: "fp", name: "French Press", type: "Immersion", filter: "Metal", description: "Full immersion with a metal mesh plunger. Heavy body and very forgiving." },
+  { id: "aero", name: "AeroPress", type: "Hybrid (immersion + pressure)", filter: "Paper", description: "Immersion with a gentle press. Fast, versatile, travels well." },
+];
+
+const DIAL_IN_TIP = "Drawdown much past 3:30 → grind coarser. Sour or hollow and fast → grind finer. Change one thing per brew and note it in 'next time'.";
+const HOFFMANN_V60_STEPS = [
+  { at: null, text: "Rinse the paper filter with hot water and discard the water. Add the coffee, level the bed and make a small well in the middle." },
+  { at: 0, text: "Bloom: pour 60 g (twice the dose), then swirl so every ground is wet.", water: 60 },
+  { at: 45, text: "Pour in circles: a steady spiral pour until the scale reads 300 g.", water: 300 },
+  { at: 75, text: "Pour gently: a slower, lower pour up to 500 g.", water: 500 },
+  { at: 105, text: "Stir & swirl: stir once gently with a spoon, then a gentle swirl to flatten the bed." },
+  { at: 120, text: "Drawdown: hands off. Let it drain; aim to finish around 3:30." },
+  { at: 210, text: "Done: pull the dripper. Taste it, then rate it while it's fresh." },
 ];
 
 const BUILTIN_RECIPES = [
   { id: "r-hoffmann-v60", methodId: "v60", name: "The Ultimate V60 Technique", author: "James Hoffmann", source: "https://www.hario-usa.com/blogs/recipes-and-more-from-friends/james-hoffmann-uitimate-v60-technique",
-    dose: 30, water: 500, temp: 100, tempLabel: "Just off the boil", grind: "Medium-fine", total: 210, builtin: true,
-    steps: [
-      { at: null, text: "Rinse the paper filter with hot water and discard the water. Add the coffee, level the bed and make a small well in the middle." },
-      { at: 0, text: "Bloom: pour 60 g (2× the dose) and swirl the brewer so all the grounds get wet.", water: 60 },
-      { at: 45, text: "Pour in circles up to 300 g, finishing by 1:15.", water: 300 },
-      { at: 75, text: "Pour more gently up to 500 g, finishing by 1:45.", water: 500 },
-      { at: 105, text: "Stir once gently with a spoon, then swirl gently to flatten the bed." },
-      { at: 210, text: "The drawdown finishes. Serve." },
-    ] },
+    dose: 30, water: 500, temp: 100, tempLabel: "Just off the boil", grind: "Medium-fine", total: 210, builtin: true, dialIn: DIAL_IN_TIP,
+    steps: HOFFMANN_V60_STEPS },
   { id: "r-kasuya-46", methodId: "v60", name: "4:6 Method", author: "Tetsu Kasuya · 2016 World Brewers Cup", source: "https://hario.co.uk/blogs/hario-ambassadors/hario-v60-recipe-interview-with-hario-ambassador-tetsu-kasuya",
     dose: 20, water: 300, temp: 93, grind: "Medium-coarse", total: 210, builtin: true,
     idea: "The water is split into 40% (the first two pours set sweetness vs. acidity) and 60% (the last pours set strength).",
@@ -418,7 +442,7 @@ const BUILTIN_RECIPES = [
       { at: 210, text: "Remove the dripper." },
     ] },
   { id: "r-hoffmann-fp", methodId: "fp", name: "The Ultimate French Press Technique", author: "James Hoffmann", source: "https://honestcoffeeguide.com/brew-recipes/james-hoffmann-french-press/",
-    dose: 30, water: 500, temp: 100, tempLabel: "Just off the boil", grind: "Medium", grindNote: "not too coarse", total: 540, totalLabel: "9–12 min", builtin: true,
+    dose: 30, water: 500, temp: 100, tempLabel: "Just off the boil", grind: "Medium", grindNote: "not too coarse", total: 540, totalLabel: "9:00+", builtin: true,
     steps: [
       { at: 0, text: "Add the coffee and pour all 500 g of water. Don't stir.", water: 500 },
       { at: 240, text: "Break the crust with a spoon and stir gently. Skim off the foam and floating grounds." },
@@ -433,8 +457,8 @@ const BUILTIN_RECIPES = [
       { at: 60, text: "Stir the grounds into the water, then top up to 850 g. Put the lid on.", water: 850 },
       { at: 240, text: "Press the plunger all the way down and serve right away. Pour it all out so it doesn't over-extract." },
     ] },
-  { id: "r-hoffmann-aero", methodId: "aero", name: "The Ultimate AeroPress Technique", author: "James Hoffmann", source: "https://aeroprecipe.com/recipes/james-hoffmann-aeropress-recipe",
-    dose: 11, water: 200, temp: 100, tempLabel: "Just off the boil", grind: "Medium-fine", grindNote: "fine side of medium", total: 180, filter: "Paper, no rinse needed", builtin: true,
+  { id: "r-hoffmann-aero", methodId: "aero", name: "The Ultimate AeroPress Technique", author: "James Hoffmann · standard", source: "https://aeroprecipe.com/recipes/james-hoffmann-aeropress-recipe",
+    dose: 11, water: 200, temp: 100, tempLabel: "Just off the boil", grind: "Fine-medium", grindNote: "fine side of medium", total: 180, filter: "Paper, no rinse needed", builtin: true,
     steps: [
       { at: null, text: "Set the AeroPress in the normal position on top of a mug, with the filter cap on." },
       { at: 0, text: "Add the coffee and pour 200 g of water quickly so all the grounds get wet. Put the plunger in about 1 cm to make a vacuum (this stops dripping).", water: 200 },
@@ -442,8 +466,8 @@ const BUILTIN_RECIPES = [
       { at: 150, text: "Press gently for about 30 s, all the way down." },
       { at: 180, text: "Done. Serve." },
     ] },
-  { id: "r-wac-2019", methodId: "aero", name: "2019 World AeroPress Champion (inverted)", author: "Wendelien van Bunnik", source: "https://aeroprecipe.com/recipes/2019-wac-1st-place",
-    dose: 30, water: 220, temp: 92, grind: "Coarse", total: 90, filter: "Rinsed paper", builtin: true,
+  { id: "r-wac-2019", methodId: "aero", name: "2019 World AeroPress Champion", author: "Wendelien van Bunnik · inverted", source: "https://aeroprecipe.com/recipes/2019-wac-1st-place",
+    dose: 30, water: 220, waterLabel: "100 + 120 g", temp: 92, grind: "Coarse", total: 90, filter: "Rinsed paper", builtin: true,
     idea: "Brew a concentrate with 100 g of water, then dilute it with 120 g of bypass water. The brew ratio is 1:3.3 and the final ratio ~1:7.3.",
     steps: [
       { at: null, text: "Set the AeroPress inverted. Add 30 g of coffee." },
@@ -455,29 +479,38 @@ const BUILTIN_RECIPES = [
 ];
 
 function seed() {
-  const roasted = n => localDate(daysAgo(n));
-  const at = (n, h, m) => daysAgo(n, h, m).toISOString();
+  const at = (mon, day, h, m) => new Date(2026, mon - 1, day, h, m).toISOString();
+  const blank = { region: "", farm: "", variety: "", altitude: "", roastLevel: "", roastDate: "", roasterNotes: "", sca: "", form: "", bagWeight: "", price: "", purchaseDate: "", notes: "" };
   const coffees = [
-    { id: "c-santa-ines", name: "Fazenda Santa Inês — Yellow Bourbon", roaster: "Coffee Lab", country: "Brazil", region: "Sul de Minas", farm: "Fazenda Santa Inês", variety: "Yellow Bourbon", process: "Natural", altitude: 1150, roastLevel: "Medium-light", roastDate: roasted(16), roasterNotes: "Chocolate, caramel, yellow fruits", sca: 86, form: "Whole bean", bagWeight: 250, price: "R$ 65.00", purchaseDate: roasted(11), notes: "Great all-rounder. Sweetest on the V60.", status: "active" },
-    { id: "c-guji", name: "Guji Hambela — Heirloom", roaster: "Little Owl Roasters", country: "Ethiopia", region: "Guji", farm: "Hambela washing station", variety: "Heirloom", process: "Washed", altitude: 2100, roastLevel: "Light", roastDate: roasted(9), roasterNotes: "Jasmine, bergamot, peach", sca: 88, form: "Whole bean", bagWeight: 200, price: "R$ 89.00", purchaseDate: roasted(6), notes: "", status: "active" },
-    { id: "c-huila", name: "Huila El Paraíso — Pink Bourbon", roaster: "Moinho Torrefação", country: "Colombia", region: "Huila", farm: "Finca El Paraíso", variety: "Pink Bourbon", process: "Honey", altitude: 1750, roastLevel: "Light", roastDate: roasted(2), roasterNotes: "Red berries, panela, cacao nibs", sca: 87, form: "Whole bean", bagWeight: 250, price: "R$ 78.00", purchaseDate: roasted(1), notes: "Let it rest a few days before brewing.", status: "active" },
-    { id: "c-cerrado", name: "Cerrado Mineiro — Mundo Novo", roaster: "Coffee Lab", country: "Brazil", region: "Cerrado Mineiro", farm: "", variety: "Mundo Novo", process: "Pulped natural", altitude: 1000, roastLevel: "Medium", roastDate: roasted(58), roasterNotes: "Nuts, milk chocolate", sca: 84, form: "Pre-ground", bagWeight: 250, price: "R$ 42.00", purchaseDate: roasted(52), notes: "Pre-ground, so French Press only.", status: "finished" },
+    { ...blank, id: "c-santa-ines", name: "Fazenda Santa Inês — Yellow Bourbon", roaster: "Coffee Lab", country: "Brazil", region: "Sul de Minas", farm: "Fazenda Santa Inês", variety: "Yellow Bourbon", process: "Natural", altitude: 1150, roastLevel: "Medium-light", roastDate: "2026-10-10", roasterNotes: "Chocolate, caramel, yellow fruits", sca: 86, form: "Whole bean", bagWeight: 250, price: "R$ 65.00", purchaseDate: "2026-10-15", notes: "Shines on pour-over. Needs a finer grind than the Ethiopians to avoid a sour finish.", status: "active" },
+    { ...blank, id: "c-guji", name: "Guji Hambela", roaster: "Northside Roastery", country: "Ethiopia", region: "Guji", variety: "Heirloom", process: "Washed", roastLevel: "Light", roastDate: "2026-10-19", roasterNotes: "Jasmine, bergamot, peach", sca: 88, status: "active" },
+    { ...blank, id: "c-huila", name: "Huila Pink Bourbon", roaster: "Moinho Roasters", country: "Colombia", region: "Huila", variety: "Pink Bourbon", process: "Anaerobic", roastLevel: "Light", roastDate: "2026-10-22", roasterNotes: "Red berries, cacao nib", sca: 87.5, status: "active" },
+    { ...blank, id: "c-cerrado", name: "Cerrado Mineiro — Catuaí", roaster: "Coffee Lab", country: "Brazil", process: "Pulped natural", status: "finished" },
+    { ...blank, id: "c-nyeri", name: "Nyeri AA", roaster: "Northside Roastery", country: "Kenya", process: "Washed", status: "finished" },
+    { ...blank, id: "c-rio-verde", name: "Sítio Rio Verde", roaster: "Moinho Roasters", country: "Brazil", process: "Honey", status: "finished" },
   ];
-  const sens = (a, s, b, bi) => ({ acidity: a, sweetness: s, body: b, bitterness: bi });
+  const recipes = [
+    { id: "r-house-v60", methodId: "v60", name: "Santa Inês house V60", author: "Based on James Hoffmann", dose: 30, water: 500, temp: 98, grind: "Medium-fine", grindNote: "Comandante 24 clicks", total: 210, builtin: false,
+      dialIn: DIAL_IN_TIP, steps: JSON.parse(JSON.stringify(HOFFMANN_V60_STEPS)) },
+  ];
+  const brew = (id, date, coffeeId, recipeId, dose, water, clicks, time, rating, notes, next, sensory = null) =>
+    ({ id, date, coffeeId, recipeId, dose, water, temp: null, grinder: `Comandante — ${clicks} clicks`, time, rating, notes, next, sensory });
   const brews = [
-    { id: "b1", date: at(0, 7, 45), coffeeId: "c-santa-ines", recipeId: "r-hoffmann-v60", dose: 30, water: 500, temp: 98, grinder: "Comandante — 22 clicks", time: 230, rating: 5, notes: "Caramel and ripe banana, long finish. Best cup of this bag so far.", sensory: sens(3, 5, 4, 1), next: "Keep it exactly like this." },
-    { id: "b2", date: at(1, 8, 10), coffeeId: "c-santa-ines", recipeId: "r-hoffmann-v60", dose: 30, water: 500, temp: 100, grinder: "Comandante — 24 clicks", time: 215, rating: 4, notes: "Sweet, a bit sour at the end.", sensory: sens(4, 4, 3, 1), next: "Grind 2 clicks finer." },
-    { id: "b3", date: at(2, 9, 0), coffeeId: "c-guji", recipeId: "r-kasuya-46", dose: 20, water: 300, temp: 93, grinder: "Comandante — 26 clicks", time: 212, rating: 5, notes: "Floral and tea-like, with peach as it cools.", sensory: sens(4, 4, 2, 1), next: "Try a smaller first pour for more sweetness." },
-    { id: "b4", date: at(3, 7, 30), coffeeId: "c-guji", recipeId: "r-hoffmann-v60", dose: 30, water: 500, temp: 96, grinder: "Comandante — 24 clicks", time: 200, rating: 3, notes: "Too bright and a little thin.", sensory: sens(5, 2, 2, 1), next: "Go back to the 4:6 method for this one." },
-    { id: "b5", date: at(4, 15, 20), coffeeId: "c-guji", recipeId: "r-hoffmann-aero", dose: 11, water: 200, temp: 100, grinder: "Comandante — 18 clicks", time: 185, rating: 4, notes: "Juicy and clean, but small.", sensory: sens(4, 3, 3, 1), next: "Scale up to 15 g / 250 g." },
-    { id: "b6", date: at(5, 8, 0), coffeeId: "c-santa-ines", recipeId: "r-stumptown-fp", dose: 56, water: 850, temp: 96, grinder: "Comandante — 34 clicks", time: 240, rating: 3, notes: "Heavy body, a bit muddy towards the end.", sensory: sens(2, 3, 5, 3), next: "Try the Hoffmann French Press for a cleaner cup." },
-    { id: "b7", date: at(12, 8, 30), coffeeId: "c-cerrado", recipeId: "r-hoffmann-fp", dose: 30, water: 500, temp: 100, grinder: "Pre-ground", time: 600, rating: 4, notes: "Nutty and chocolatey, very clean for a French press.", sensory: sens(2, 4, 4, 2), next: "" },
+    brew("b1", at(10, 26, 8, 15), "c-santa-ines", "r-hoffmann-v60", 30, 500, 24, 212, 5, "Sweet and round, long caramel finish. Like a milk-chocolate bar with ripe mango.", "Keep it.", { acidity: 3, sweetness: 5, body: 4, bitterness: 1 }),
+    brew("b2", at(10, 25, 7, 50), "c-guji", "r-kasuya-46", 20, 300, 28, 208, 4, "Bright and floral, a touch thin.", "Smaller first pour (for more sweetness)."),
+    brew("b3", at(10, 24, 9, 10), "c-santa-ines", "r-hoffmann-aero", 11, 200, 20, 180, 3, "Sweet, a bit sour at the end.", "Grind 2 clicks finer."),
+    brew("b4", at(10, 23, 8, 5), "c-huila", "r-stumptown-fp", 56, 850, 32, 240, 2, "Muddy and heavy, flavours flat.", "Let it rest longer; try Hoffmann's press."),
+    brew("b5", at(10, 22, 7, 40), "c-santa-ines", "r-hoffmann-v60", 30, 500, 26, 190, 3, "Fast drawdown, slightly hollow.", "Grind finer."),
+    brew("b6", at(10, 21, 8, 20), "c-guji", "r-hoffmann-aero", 11, 200, 18, 180, 4, "Juicy peach, clean.", "Try 1:16."),
+    brew("b7", at(10, 20, 7, 55), "c-santa-ines", "r-kasuya-46", 20, 300, 28, 205, 3, "Clean but a little thin.", "Bigger dose."),
+    brew("b8", at(10, 19, 8, 30), "c-guji", "r-hoffmann-v60", 30, 500, 25, 220, 3, "A bit astringent.", "Grind coarser."),
+    brew("b9", at(10, 18, 8, 0), "c-santa-ines", "r-hoffmann-v60", 30, 500, 25, 200, 4, "Getting there — more sweetness.", "One click finer."),
   ];
-  return { coffees, recipes: [], brews };
+  return { coffees, recipes, brews };
 }
 
 /* ================= State (in-memory + best-effort localStorage) ================= */
-const STORE_KEY = "coffee-nerds-proto-v1";
+const STORE_KEY = "coffee-nerds-proto-v2";
 let state;
 try { state = JSON.parse(localStorage.getItem(STORE_KEY)) || seed(); } catch { state = seed(); }
 function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch { /* private mode: keep in memory */ } }
@@ -489,10 +522,15 @@ const getMethod = id => METHODS.find(m => m.id === id);
 const byDateDesc = (a, b) => new Date(b.date) - new Date(a.date);
 const brewsFor = pred => state.brews.filter(pred).sort(byDateDesc);
 const bestBrew = coffeeId => brewsFor(b => b.coffeeId === coffeeId).sort((a, b) => b.rating - a.rating || byDateDesc(a, b))[0];
-const tempText = r => r.temp ? `${r.temp} °C` : "—";
+const tempText = r => r.temp ? `${r.tempLabel ? "~" : ""}${r.temp} °C` : "—";
+const waterText = r => r.waterLabel || `${r.water} g`;
+const usedText = id => { const n = state.brews.filter(b => b.recipeId === id).length; return n ? `Used ${n}×` : "Not used yet"; };
+const brewLine = b => [`${b.dose} g / ${b.water} g (${ratio(b.dose, b.water)})`, b.temp != null ? `${b.temp} °C` : "", b.grinder, b.time != null ? fmtTime(b.time) : ""].filter(Boolean).map(esc).join(" · ");
+const RATING_WORDS = ["Tap a star", "Undrinkable", "Meh", "Decent", "Great", "Best cup yet"];
+const SENSORY = [["acidity", "Acidity", "Flat", "Bright", 3], ["sweetness", "Sweetness", "None", "Very sweet", 4], ["body", "Body", "Tea-like", "Heavy", 3], ["bitterness", "Bitterness", "None", "Harsh", 2]];
 
 /* ================= Shared components ================= */
-function coffeeCard(c, { brewBtn = true } = {}) {
+function coffeeCard(c, { brewBtn = true, bar = false } = {}) {
   const count = state.brews.filter(b => b.coffeeId === c.id).length;
   const best = bestBrew(c.id);
   return `<article class="card coffee-card">
@@ -502,7 +540,8 @@ function coffeeCard(c, { brewBtn = true } = {}) {
         <p class="muted small">${esc(c.roaster)} · ${esc(c.country)}</p>
       </div>
     </div>
-    <div class="chips">${c.process ? `<span class="chip">${esc(c.process)}</span>` : ""}${c.roastLevel ? `<span class="chip">${esc(c.roastLevel)}</span>` : ""}<span class="chip">${count} brew${count === 1 ? "" : "s"}${best ? ` · best ${best.rating}★` : ""}</span></div>
+    <div class="chips">${c.process ? `<span class="chip">${esc(c.process)}</span>` : ""}${c.roastLevel ? `<span class="chip">${esc(c.roastLevel)}</span>` : ""}<span class="chip">${count} brew${count === 1 ? "" : "s"}${best ? ` · best ${best.rating}★ ${esc(getMethod(getRecipe(best.recipeId)?.methodId)?.name || "")}` : ""}</span></div>
+    ${bar && c.status === "active" ? freshBar(c) : ""}
     <div class="card-foot">${c.status === "finished" ? `<span class="badge plain">Finished</span>` : freshness(c)}
       ${brewBtn && c.status === "active" ? `<a class="btn small" href="#/brew/new?coffee=${c.id}">Brew</a>` : ""}</div>
   </article>`;
@@ -518,12 +557,12 @@ function brewLink(b) {
 function recipeCard(r) {
   const m = getMethod(r.methodId);
   return `<article class="card recipe-card">
-    <div class="top">${ICONS[r.methodId]}<span class="tag">${r.builtin ? "🔒 Built-in" : "★ My recipe"}</span></div>
+    <div class="top">${ICONS[r.methodId]}<span class="tag">${r.builtin ? "🔒 Built-in" : "★ My recipe"} · ${usedText(r.id)}</span></div>
     <h3><a href="#/recipes/${r.id}">${esc(r.name)}</a></h3>
     <p class="muted small" style="margin:0">${esc(m.name)} · ${esc(r.author || "You")}</p>
     <ul class="specs">
       <li><b>${r.dose} g</b><span>Coffee</span></li>
-      <li><b>${r.water} g</b><span>Water</span></li>
+      <li><b>${waterText(r)}</b><span>Water</span></li>
       <li><b>${ratio(r.dose, r.water)}</b><span>Ratio</span></li>
       <li><b>${tempText(r)}</b><span>Temp</span></li>
       <li><b>${r.totalLabel || fmtTime(r.total)}</b><span>Time</span></li>
@@ -549,26 +588,32 @@ function viewHome() {
   document.title = "Coffee Nerds";
   const active = state.coffees.filter(c => c.status === "active");
   const recent = brewsFor(() => true).slice(0, 5);
-  const week = state.brews.filter(b => Date.now() - new Date(b.date) < 7 * DAY);
+  const now = new Date();
+  const month = state.brews.filter(b => { const d = new Date(b.date); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); });
   const avg = state.brews.length ? (state.brews.reduce((s, b) => s + b.rating, 0) / state.brews.length).toFixed(1) : "—";
+  const byMethod = {};
+  state.brews.forEach(b => { const m = getRecipe(b.recipeId)?.methodId; if (m) byMethod[m] = (byMethod[m] || 0) + 1; });
+  const topMethod = getMethod(Object.entries(byMethod).sort((a, b) => b[1] - a[1])[0]?.[0])?.name || "—";
   const bests = active.map(c => [c, bestBrew(c.id)]).filter(([, b]) => b);
   app.innerHTML = `
   <section class="hero">
     <div>
       <p class="eyebrow">${greeting()}</p>
       <h1>What's in the cup today?</h1>
-      <p class="lede">Pick a bag, pick a recipe, brew it and note how it tasted. Next time you'll know exactly how to repeat a great cup.</p>
+      <p class="lede">Pick a bag, pick a recipe, write down how it tasted. Your journal remembers the rest — and tells you how to repeat the good cups.</p>
       <div class="row"><a class="btn primary" href="#/brew/new">+ Log a brew</a><a class="btn" href="#/recipes">Browse recipes</a></div>
     </div>
     <dl class="stats">
-      <div><dt>Brews this week</dt><dd>${week.length}</dd></div>
-      <div><dt>Active bags</dt><dd>${active.length}</dd></div>
-      <div><dt>Avg. rating</dt><dd>${avg}</dd></div>
+      <div><dt>Brews this month</dt><dd>${month.length}</dd></div>
+      <div><dt>Bags on the shelf</dt><dd>${active.length}</dd></div>
+      <div><dt>Average rating</dt><dd>${avg}<small> / 5</small></dd></div>
+      <div><dt>Most-used method</dt><dd>${esc(topMethod)}</dd></div>
     </dl>
   </section>
   <section>
     <div class="section-head"><h2>Active bags</h2><a href="#/coffees">All coffees →</a></div>
-    ${active.length ? `<div class="scroller">${active.map(c => coffeeCard(c)).join("")}</div>` :
+    ${active.map(restingTip).join("")}
+    ${active.length ? `<div class="scroller">${active.map(c => coffeeCard(c, { bar: true })).join("")}</div>` :
       emptyState("No active bags", "Add the coffee you're brewing right now to start your journal.", `<a class="btn primary" href="#/coffees/new">+ Add a coffee</a>`)}
   </section>
   <div class="two-col">
@@ -583,7 +628,7 @@ function viewHome() {
         return `<div class="card">
           <p class="tag">${esc(c.name)}</p>
           <h3 style="margin:4px 0">${esc(r?.name || "")}</h3>
-          <p class="muted small" style="margin:0">${esc(getMethod(r?.methodId)?.name || "")} · ${b.dose} g / ${b.water} g · ${esc(b.grinder || "")}</p>
+          <p class="muted small" style="margin:0">${esc(getMethod(r?.methodId)?.name || "")} · ${brewLine(b)}</p>
           <div class="card-foot">${stars(b.rating)}<a class="btn small" href="#/brew/new?coffee=${c.id}&recipe=${b.recipeId}">Brew it again</a></div>
         </div>`;
       }).join("") : emptyState("Nothing rated yet", "Rate your brews and the best recipe for each bag will appear here.")}</div>
@@ -643,15 +688,20 @@ function viewCoffee(id) {
         <button class="btn ghost" id="toggle">${c.status === "active" ? "Mark as finished" : "Reactivate"}</button>
       </div>
     </div>
+    ${restingTip(c)}
     <div class="detail-layout">
       <div class="stack">
         ${best ? `<div class="callout">
           <p class="tag" style="color:var(--good)">Best way to brew this so far</p>
           <h3>${esc(br?.name || "")} <span class="muted small">(${esc(getMethod(br?.methodId)?.name || "")})</span></h3>
-          <p class="small" style="margin:0">${best.dose} g / ${best.water} g (${ratio(best.dose, best.water)}) · ${best.temp ?? "—"} °C · ${esc(best.grinder || "")} · ${fmtTime(best.time)} · ${stars(best.rating)}</p>
+          <p class="small" style="margin:0">${brewLine(best)} · ${stars(best.rating)}</p>
           ${best.next ? `<p class="small" style="margin:8px 0 0"><b>Next time:</b> ${esc(best.next)}</p>` : ""}
           <div class="row" style="margin-top:12px"><a class="btn small primary" href="#/brew/new?coffee=${c.id}&recipe=${best.recipeId}">Brew it again</a></div>
         </div>` : ""}
+        ${brews.length ? `<div class="card"><h2>Best per method</h2><dl class="details">${METHODS.map(m => {
+          const mb = brews.filter(b => getRecipe(b.recipeId)?.methodId === m.id).sort((a, b) => b.rating - a.rating || byDateDesc(a, b))[0];
+          return `<dt>${m.name}</dt><dd>${mb ? `${stars(mb.rating)} <span class="muted small">${esc(mb.grinder || "")} · ${fmtTime(mb.time)}</span>` : `<span class="muted">Not brewed yet</span>`}</dd>`;
+        }).join("")}</dl></div>` : ""}
         <div class="card"><h2>Details</h2><dl class="details">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
         ${c.notes ? `<p class="note" style="margin-top:14px">${esc(c.notes)}</p>` : ""}</div>
       </div>
@@ -767,7 +817,7 @@ function viewRecipe(id) {
     </div>
     <ul class="specs big" style="margin-bottom:24px">
       <li><b>${r.dose} g</b><span>Coffee</span></li>
-      <li><b>${r.water} g</b><span>Water</span></li>
+      <li><b>${waterText(r)}</b><span>Water</span></li>
       <li><b>${ratio(r.dose, r.water)}</b><span>Ratio</span></li>
       <li><b>${tempText(r)}</b><span>${esc(r.tempLabel || "Temperature")}</span></li>
       <li><b style="font-size:1.05rem">${esc(r.grind)}</b><span>${esc(r.grindNote || "Grind")}</span></li>
@@ -778,6 +828,7 @@ function viewRecipe(id) {
       <div class="stack">
         ${r.idea ? `<div class="card"><h3>The idea</h3><p style="margin:0">${esc(r.idea)}</p></div>` : ""}
         ${r.tips ? `<div class="card"><h3>How to adjust</h3><ul style="margin:0;padding-left:20px">${r.tips.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div>` : ""}
+        ${r.dialIn ? `<div class="card"><h3>Dialing in</h3><p style="margin:0">${esc(r.dialIn)}</p></div>` : ""}
         ${r.filter ? `<div class="card"><h3>Filter</h3><p style="margin:0">${esc(r.filter)}</p></div>` : ""}
         <div class="card"><h3>Your brews with this recipe</h3>
           ${brews.length ? `<p class="muted">${brews.length} brew${brews.length === 1 ? "" : "s"} · average ${avg}★</p><div class="list">${brews.slice(0, 4).map(brewLink).join("")}</div>` : `<p class="muted" style="margin:0">You haven't brewed this one yet.</p>`}
@@ -814,7 +865,7 @@ function viewRecipeForm(id, q) {
         ${field("Water", `<div class="input-unit"><input type="number" name="water" required min="1" value="${base.water}"><i>g</i></div>`, { req: true })}
         <div class="field"><span>Ratio</span><output class="ratio-out" id="ratio">${ratio(base.dose, base.water)}</output><span class="hint">Calculated from dose and water</span></div>
         ${field("Water temperature", `<div class="input-unit"><input type="number" name="temp" min="60" max="100" value="${base.temp ?? ""}"><i>°C</i></div>`, { hint: "100 = just off the boil" })}
-        ${field("Grind size", `<select name="grind" required>${GRIND.map(g => opt(g, base.grind)).join("")}</select>`, { req: true })}
+        ${field("Grind size", `<select name="grind" required>${(GRIND.includes(base.grind) ? GRIND : [base.grind, ...GRIND]).map(g => opt(g, base.grind)).join("")}</select>`, { req: true })}
         ${field("Total brew time", `<input type="text" name="total" value="${base.total ? fmtTime(base.total) : ""}" placeholder="3:30" pattern="\\d+:\\d{2}">`, { hint: "m:ss" })}
       </div></fieldset>
       <fieldset><legend>Steps</legend>
@@ -874,15 +925,19 @@ function viewBrewNew(q) {
       ${METHODS.map(m => `<section><h2 class="row" style="gap:8px">${ICONS[m.id]} ${m.name}</h2><div class="grid">
         ${allRecipes().filter(r => r.methodId === m.id).map(r => `<a class="pick card" href="${link({ recipe: r.id })}">
           <p class="tag" style="margin:0 0 4px">${r.builtin ? "🔒 Built-in" : "★ My recipe"}</p><h3>${esc(r.name)}</h3>
-          <p class="muted small" style="margin:0">${r.dose} g · ${r.water} g · ${ratio(r.dose, r.water)} · ${tempText(r)} · ${esc(r.grind)}</p></a>`).join("")}
+          <p class="muted small" style="margin:0">${r.dose} g · ${waterText(r)} · ${ratio(r.dose, r.water)} · ${tempText(r)} · ${esc(r.grind)}</p></a>`).join("")}
       </div></section>`).join("")}`;
   } else {
     const last = brewsFor(b => b.coffeeId === coffee.id && b.recipeId === recipe.id)[0];
+    const lastNote = brewsFor(b => b.coffeeId === coffee.id && b.next)[0];
     const grinderGuess = last?.grinder || brewsFor(() => true)[0]?.grinder || "";
     body = `<h1>Brew &amp; rate</h1>
+      <p class="muted">Only the coffee, recipe and rating are required. Everything else is optional.</p>
       <div class="summary-bar"><span>☕ <b>${esc(coffee.name)}</b></span><span>${ICONS[recipe.methodId]}</span><span><b>${esc(recipe.name)}</b></span>
         <a href="#/guide/${recipe.id}?coffee=${coffee.id}">▶ Open brew guide</a></div>
-      ${last?.next ? `<div class="callout"><p class="tag" style="color:var(--good)">Last time you said</p><p style="margin:0">“${esc(last.next)}”</p></div>` : ""}
+      ${lastNote ? `<div class="callout"><p class="tag" style="color:var(--good)">Last time with this coffee · ${esc(getRecipe(lastNote.recipeId)?.name || "")}, ${relDate(lastNote.date)}</p><p style="margin:0">“${esc(lastNote.next)}”</p></div>` : ""}
+      ${restingTip(coffee)}
+      ${recipe.dialIn ? `<div class="callout info"><p style="margin:0"><b>Dialing in:</b> ${esc(recipe.dialIn)}</p></div>` : ""}
       <form id="f" autocomplete="off">
         <fieldset><legend>What you actually did</legend>
           <p class="hint" style="margin-top:0">Pre-filled from the recipe. Change anything you did differently.</p>
@@ -896,11 +951,10 @@ function viewBrewNew(q) {
             ${field("Actual total time", `<input type="text" name="time" placeholder="${fmtTime(recipe.total)}" pattern="\\d+:\\d{2}">`, { hint: "m:ss" })}
           </div></fieldset>
         <fieldset><legend>How did it taste?</legend>
-          <div class="field" style="margin-bottom:18px"><span>Rating <span class="req" aria-hidden="true">*</span></span>
+          <div class="field" style="margin-bottom:18px"><span>Rating <span class="req" aria-hidden="true">*</span> <span class="muted" id="rating-word" aria-live="polite" style="font-weight:500;margin-left:6px">${RATING_WORDS[0]}</span></span>
             <div class="star-input" role="radiogroup" aria-label="Rating">${[5, 4, 3, 2, 1].map(n => `<input type="radio" id="s${n}" name="rating" value="${n}" ${n === 5 ? "required" : ""}><label for="s${n}" title="${n} star${n > 1 ? "s" : ""}"><span class="sr-only">${n} star${n > 1 ? "s" : ""}</span><span aria-hidden="true">★</span></label>`).join("")}</div></div>
           <div class="stack" style="margin-bottom:18px">
-            ${["Acidity", "Sweetness", "Body", "Bitterness"].map(s => `<label class="slider"><span class="small" style="font-weight:600">${s}</span><input type="range" name="${s.toLowerCase()}" min="1" max="5" value="3" oninput="this.nextElementSibling.value=this.value"><output>3</output></label>`).join("")}
-            <div class="slider-scale"><span>low</span><span>high</span></div>
+            ${SENSORY.map(([k, l, lo, hi, def]) => `<label class="slider"><span class="small" style="font-weight:600">${l}</span><input type="range" name="${k}" min="1" max="5" value="${def}" oninput="this.nextElementSibling.value=this.value" aria-describedby="ends-${k}"><output>${def}</output><span class="ends" id="ends-${k}"><span>1 · ${lo}</span><span>${hi} · 5</span></span></label>`).join("")}
           </div>
           <div class="fields">
             ${field("Tasting notes", `<textarea name="notes" placeholder="Sweet, a bit sour at the end…"></textarea>`, { full: true })}
@@ -914,6 +968,7 @@ function viewBrewNew(q) {
   if (!f) return;
   const upd = () => { $("#ratio").textContent = ratio(+f.dose.value, +f.water.value); };
   f.dose.addEventListener("input", upd); f.water.addEventListener("input", upd);
+  f.addEventListener("change", e => { if (e.target.name === "rating") $("#rating-word").textContent = RATING_WORDS[+e.target.value]; });
   f.addEventListener("submit", e => {
     e.preventDefault();
     const d = Object.fromEntries(new FormData(f));
@@ -938,13 +993,13 @@ function viewGuide(id, q) {
   let elapsed = 0, startedAt = null;
   app.innerHTML = `
     <a class="back" href="#/recipes/${r.id}">← ${esc(r.name)}</a>
-    <div class="guide">
+    <div class="guide dark-scope">
       <div class="card guide-panel">
         <p class="eyebrow">${getMethod(r.methodId).name} brew guide</p>
         <h1 style="font-size:1.6rem">${esc(r.name)}</h1>
         <p class="muted small" style="margin:0">${r.dose} g coffee · ${r.water} g water · ${ratio(r.dose, r.water)} · ${tempText(r)} · ${esc(r.grind)}${coffee ? ` · ${esc(coffee.name)}` : ""}</p>
         <div class="clock" id="clock" role="timer" aria-live="off">0:00</div>
-        <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+        <div class="progress" aria-hidden="true"><i id="prog"></i>${timed.filter(s => s.at > 0 && s.at < total).map(s => `<b style="left:${s.at / total * 100}%"></b>`).join("")}</div>
         <div class="now-card" aria-live="polite">
           <p class="tag" id="now-label" style="margin-bottom:6px">Get ready</p>
           <p id="now-text" style="font-size:1.1rem;font-weight:600">${prep.length ? "Do the prep, then press Start when the first water hits the coffee." : "Press Start when the first water hits the coffee."}</p>
@@ -1015,7 +1070,7 @@ function viewHistory(q) {
     const best = fc && bestBrew(fc);
     $("#best").innerHTML = best ? `<div class="callout"><p class="tag" style="color:var(--good)">Best way to brew ${esc(getCoffee(fc).name)}</p>
       <h3>${esc(getRecipe(best.recipeId)?.name || "")} · ${stars(best.rating)}</h3>
-      <p class="small" style="margin:0">${best.dose} g / ${best.water} g (${ratio(best.dose, best.water)}) · ${best.temp ?? "—"} °C · ${esc(best.grinder || "")} · ${fmtTime(best.time)}</p></div>` : "";
+      <p class="small" style="margin:0">${brewLine(best)}</p></div>` : "";
     $("#results").innerHTML = list.length ? `<div class="list">${list.map(b => brewDetails(b, b.id === open)).join("")}</div>` :
       emptyState("No brews match", "Try loosening the filters, or log a new brew.", `<a class="btn primary" href="#/brew/new">+ Log a brew</a>`);
   };
@@ -1037,7 +1092,7 @@ function brewDetails(b, open) {
         <div><dt>Dose</dt><dd>${b.dose} g${diff(b.dose, r?.dose, " g")}</dd></div>
         <div><dt>Water</dt><dd>${b.water} g${diff(b.water, r?.water, " g")}</dd></div>
         <div><dt>Ratio</dt><dd>${ratio(b.dose, b.water)}</dd></div>
-        <div><dt>Temp</dt><dd>${b.temp ?? "—"} °C${diff(b.temp, r?.temp, "°")}</dd></div>
+        <div><dt>Temp</dt><dd>${b.temp != null ? `${b.temp} °C${diff(b.temp, r?.temp, "°")}` : "—"}</dd></div>
         <div><dt>Grind</dt><dd>${esc(b.grinder || "—")}</dd></div>
         <div><dt>Time</dt><dd>${fmtTime(b.time)}</dd></div>
       </dl>
